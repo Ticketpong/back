@@ -30,10 +30,14 @@ app.use(
 
 // 라우터 설정
 const indexRouter = require("./routes/index");
+
+// member 라우터 설정
 const signupRouter = require("./routes/member/signup");
 const loginRouter = require("./routes/member/login");
 const mainRouter = require("./routes/member/main");
 const logoutRouter = require("./routes/member/logout");
+
+//manage 라우터 설정
 const manageLogin = require("./routes/manage/manageLogin");
 const manageAdd = require("./routes/manage/manageAdd");
 const manageMain = require("./routes/manage/manageMain");
@@ -45,10 +49,14 @@ const cancelReservationRouter = require("./routes/reservation/cancelReservation"
 
 //라우터 연결
 app.use("/", indexRouter);
+
+//member 라우터 연결
 app.use("/signup", signupRouter);
 app.use("/login", loginRouter);
 app.use("/main", mainRouter);
 app.use("/logout", logoutRouter);
+
+//manage 라우터 연결
 app.use("/manage", manageLogin);
 app.use("/manage/manageAdd", manageAdd);
 app.use("/manage/manageMain", manageMain);
@@ -71,7 +79,6 @@ app.use((err, req, res, next) => {
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
   res.status(err.status || 500);
-  res.render("error");
 });
 
 // 서버 실행
