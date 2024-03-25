@@ -45,13 +45,13 @@ const memberSignup = async (req, res, next) => {
 // GET signup(member)
 // 회원가입 페이지 렌더링
 const getSignup = (req, res, next) => {
-  res.render("member/signup", { title: "signup" });
+  res.status(200).send("signup success");
 };
 
 // GET signup(manage)
 // 관리자 추가 페이지 렌더링
 const getManageSignup = (req, res, next) => {
-  res.render("manage/manageAdd", { title: "관리자 추가" });
+  res.status(200).send("manageAdd success");
 };
 
 // POST signup(manage)
