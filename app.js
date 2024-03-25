@@ -90,22 +90,3 @@ app.use((err, req, res, next) => {
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
-
-
-
-/////////// 공연 API ///////////
-
-// 라우트 모듈 가져오기
-const apiRoutes = require('./routes/api');
-
-// 미들웨어 등록
-app.use(express.json());
-
-// 라우트 모듈 적용
-app.use('/api', apiRoutes);
-
-// 서버 시작
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
-});
