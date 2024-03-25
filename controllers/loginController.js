@@ -14,7 +14,7 @@ const memberLogin = async (req, res, next) => {
       });
       req.session.userId = id;
       req.session.isLogined = true;
-      res.status(200).send("login success");
+      res.status(200).json({ id: id, isLogined: true });
     } else {
       res
         .status(400)
@@ -29,7 +29,7 @@ const memberLogin = async (req, res, next) => {
 // GET login
 // 로그인 페이지 렌더링
 const getLogin = (req, res, next) => {
-  res.status(200).send("login success");
+  res.status(200).send("login rendering success");
 };
 
 // Get logout
@@ -39,7 +39,7 @@ const getLogout = (req, res, next) => {
     delete req.session.userId;
     delete req.session.isLogined;
     res.clearCookie("userId");
-    res.status(200).send("logout success");
+    res.status(200).json({ isLogined: false });
   } catch (error) {
     console.log(error);
     res.status(500).send("logout failed");
@@ -48,7 +48,7 @@ const getLogout = (req, res, next) => {
 
 //get manageLogin
 const getManageLogin = (req, res, next) => {
-  res.status(200).send("login success");
+  res.status(200).send("login rendering success");
 };
 
 //post manageLogin
@@ -63,7 +63,7 @@ const postManageLogin = async (req, res, next) => {
       });
       req.session.manageId = id;
       req.session.isLogined = true;
-      res.status(200).send("login success");
+      res.status(200).json({ id: id, isLogined: true });
     } else {
       res
         .status(400)
@@ -81,7 +81,7 @@ const getManageLogout = (req, res, next) => {
     delete req.session.manageId;
     delete req.session.isLogined;
     res.clearCookie("manageId");
-    res.status(200).send("logout success");
+    res.status(200).json({ isLogined: false });
   } catch (error) {
     console.log(error);
     res.status(500).send("logout failed");
