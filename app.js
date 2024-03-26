@@ -7,7 +7,7 @@ const FileStore = require("session-file-store")(session);
 
 // 서버 생성
 const app = express();
-const port = 3000;
+const port = 8080;
 
 // views 폴더 설정 및 ejs 엔진 설정
 app.set("views", path.join(__dirname, "views"));
