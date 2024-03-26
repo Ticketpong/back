@@ -64,7 +64,7 @@ function getShowDetail(showId) {
         // api 호출 결과
         const detailInfo = JSON.parse(xml2json.xml2json(body, { compact: true, spaces: 4 }));
         const item = detailInfo.dbs.db; // dbs안에 db라는 이름의 리스트에서 데이터 꺼냄
-        console.log(JSON.stringify(item,null,2));
+        
 
         let styurl = '';
         if(item.styurls && item.styurls.styurl) {
@@ -103,7 +103,7 @@ function getShowDetail(showId) {
             console.log('Data inserted successfully.');
         });
 
-       // savePlaceInfo(item.mt10id._text) // 시설상세 api 요청 // item.mt10id._text는 공연시설ID임.
+        savePlaceInfo(item.mt10id._text) // 시설상세 api 요청 // item.mt10id._text는 공연시설ID임.
     });
 }
 
@@ -123,17 +123,13 @@ function savePlaceInfo(placeId) {
             return;
         }
         
-        const item = JSON.parse(xml2json.xml2json(body, { compact: true, spaces: 4 }));
+        const placeInfo = JSON.parse(xml2json.xml2json(body, { compact: true, spaces: 4 }));
         
-        
-       // console.log("---------------------------시설상세 조회 결과---------------------------------------");
-       // cconsole.log(JSON.stringify(item, null, 2));
-       // console.log("------------------------------------------------------------------");
-
-        const sql = `INSERT INTO PLACE_INFO (mt10id, fcltynm, opende, fcltychartr, seatscale, mt13cnt, telno, relateurl, adres, la, lo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+        const item = placeInfo.dbs.db;
+        const sql = `INSERT INTO PERFORMANCEHALL (mt10id, fcltynm, opende, fcltychartr, seatscale, mt13cnt, telno, relateurl, adres, la, lo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
     
             const values = [
-                item.mt10id._text           // 공연시설ID 
+                item.mt10id._text         // 공연시설ID
                 , item.fcltynm._text        // 공연시설명
                 , item.opende._text         // 개관연도
                 , item.fcltychartr._text    // 시설특성
@@ -146,6 +142,7 @@ function savePlaceInfo(placeId) {
                 , item.lo._text             // 경도
                 
             ];
+
             // 쿼리 실행
             db.query(sql, values, function(err, result) {
                 if (err) {
@@ -182,14 +179,9 @@ function saveBoxOffice() {
        
         
         const items = boxOfficeInfo.boxofs; // 예매상황 목록
-        console.log("제qkf : " + JSON.stringify(items, null, 2));
 
 
-        console.log("---------------------------예매상환판 조회 결과---------------------------------------");
-        console.log(JSON.stringify(items, null, 2));
-        console.log("------------------------------------------------------------------");
-
-        const sql = `INSERT INTO BOX_OFFICE (cate, rnum, prfnm, prfpd, prfplcnm, seatcnt, prfdtcnt, area, poster, mt20id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+        const sql = `INSERT INTO BOXOFFICE (cate, rnum, prfnm, prfpd, prfplcnm, seatcnt, prfdtcnt, area, poster, mt20id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
         items.boxof.forEach((item, index) => {
             const values = [
@@ -221,4 +213,4 @@ function saveBoxOffice() {
 
 // 데이터 저장 함수 호출
 saveShowData();   // 공연정보 저장
-//saveBoxOffice();  // 예매상황판 저장
+saveBoxOffice();  // 예매상황판 저장
