@@ -52,7 +52,7 @@ app.use((err, req, res, next) => {
     res.render('error');
 });
 
-// 서버 실행
+// 서버 실행 포트 코드
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
