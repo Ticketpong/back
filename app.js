@@ -50,6 +50,10 @@ const manageAdd = require("./routes/manage/manageAdd");
 const manageMain = require("./routes/manage/manageMain");
 const manageLogout = require("./routes/manage/manageLogout");
 
+// 예약 라우터 설정
+const reservationRouter = require("./routes/reservation/reservation");
+const cancelReservationRouter = require("./routes/reservation/cancelReservation");
+
 //라우터 연결
 app.use("/", indexRouter);
 
@@ -64,6 +68,10 @@ app.use("/manage", manageLogin);
 app.use("/manage/manageAdd", manageAdd);
 app.use("/manage/manageMain", manageMain);
 app.use("/manage/manageLogout", manageLogout);
+
+// 예약 라우터 연결
+app.use("/reservation", reservationRouter);
+app.use("/reservation/cancelReservation", cancelReservationRouter);
 
 //에러 핸들러
 // 404 에러 핸들러
