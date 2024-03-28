@@ -80,7 +80,3 @@ app.use((err, req, res, next) => {
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
-
-/////////////// 공연 API ///////////////////////
-
-// 라우터 설정
