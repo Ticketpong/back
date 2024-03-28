@@ -78,6 +78,10 @@ app.use("/manage/manageAdd", manageAdd);
 app.use("/manage/manageMain", manageMain);
 app.use("/manage/manageLogout", manageLogout);
 
+// 예약 라우터 연결
+app.use("/reservation", reservationRouter);
+app.use("/reservation/cancelReservation", cancelReservationRouter);
+
 //에러 핸들러
 // 404 에러 핸들러
 app.use((req, res, next) => {
