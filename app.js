@@ -43,7 +43,7 @@ const manageLogin = require("./routes/manage/manageLogin");
 const manageAdd = require("./routes/manage/manageAdd");
 const manageMain = require("./routes/manage/manageMain");
 const manageLogout = require("./routes/manage/manageLogout");
-const apiRouter = require("./routes/api.js");
+const apiRouter = require("./routes/api");
 
 //라우터 연결
 app.use("/", indexRouter);
