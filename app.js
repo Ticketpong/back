@@ -10,9 +10,7 @@ const bodyParser = require("body-parser");
 // 서버 생성
 const app = express();
 
-/////////////// 공연 API ////////////////
-
-const port = 3000;
+const port = 8080;
 
 // 미들웨어 설정
 app.use(logger("dev")); // 로그 출력
