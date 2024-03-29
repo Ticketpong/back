@@ -33,7 +33,6 @@ router.get("/getSaveHallList", async (req, res) => {
   }
 });
 
-
 // 시설 정보 저장 라우트
 router.get("/savePlaceInfo", async (req, res) => {
   try {
