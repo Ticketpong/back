@@ -97,11 +97,3 @@ app.use((err, req, res, next) => {
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
-
-// 라우트 모듈 적용
-app.use("/api", apiRoutes);
-
-// 서버 시작
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
