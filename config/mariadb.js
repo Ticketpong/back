@@ -2,9 +2,9 @@ const mariadb = require("mysql2");
 
 info = {
   host: "localhost",
-  user: "ticketpong",
+  user: "tiketpong",
   password: "1234",
-  prot: 3306,
+  port: 3306,
   database: "ticketpong",
 };
 
