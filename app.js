@@ -80,7 +80,7 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500);
 });
 
-// 서버 실행
+// 서버 실행 함수
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
