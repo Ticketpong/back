@@ -3,11 +3,15 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const session = require("express-session");
+const cors = require("cors");
 const FileStore = require("session-file-store")(session);
 
 // 서버 생성
 const app = express();
 const port = 8080;
+const corsOptions = {
+  origin: "http://localhost:3306",
+};
 
 // views 폴더 설정 및 ejs 엔진 설정
 app.set("views", path.join(__dirname, "views"));
@@ -27,6 +31,7 @@ app.use(
     store: new FileStore(),
   })
 );
+app.use(cors(corsOptions));
 
 // 라우터 설정
 const indexRouter = require("./routes/index");
