@@ -13,7 +13,7 @@ const port = 8080;
 const corsOptions = {
   origin: "*", // 모든 도메인 허용
   credentials: true, // 쿠키를 전달하기 위한 설정
-  optionsSecSuccessStatus: 200, // 옵션 요청에 대한 응답 성공 상태
+  optionsSecSuccessStatus: 200, //
 };
 
 // views 폴더 설정 및 ejs 엔진 설정
@@ -23,7 +23,7 @@ app.set("view engine", "ejs");
 // 미들웨어 설정
 app.use(logger("dev")); // 로그 출력
 app.use(express.json()); // json 형식으로 데이터를 받아오기 위한 설정
-app.use(express.urlencoded({ extended: false })); // form 형식으로 데이터를 받아오기 위한 설정
+app.use(express.urlencoded({ extended: true })); //post 요청을 객체로 받기 위한 설정
 app.use(cookieParser()); // 쿠키 파싱 설정
 app.use(express.static(path.join(__dirname, "public"))); // 정적 파일 위치 설정
 app.use(
