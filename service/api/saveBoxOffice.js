@@ -6,6 +6,7 @@ const { db } = require("../../config/mariadb"); // DB 정보 require
 
 // 예매상황판 호출 및 저장 함수
 function saveBoxOffice() {
+  console.log("박스오피스 먼저실행");
   const options = {
     method: "GET",
     url: `http://www.kopis.or.kr/openApi/restful/boxoffice`,
@@ -31,11 +32,23 @@ function saveBoxOffice() {
     const sql = `INSERT INTO BOXOFFICE (mt20id, rnum, prfdtcnt, area) VALUES (?, ?, ?, ?)`;
 
     items.boxof.forEach((item, index) => {
+      let areaText = ''; // 지역 정보를 담을 변수를 초기화합니다.
+
+      // item 객체 안에 area 속성이 존재하는지 확인합니다.
+      if (item.hasOwnProperty('area')) {
+        // area 속성이 존재하는 경우, _text 속성이 있는지 확인합니다.
+        if (item.area.hasOwnProperty('_text')) {
+          // _text 속성이 존재하는 경우 해당 값을 areaText 변수에 저장합니다.
+          areaText = item.area._text;
+        }
+      }
+    
+
       const values = [
         item.mt20id._text, // 공연아이디
         item.rnum._text, // 순위
         item.prfdtcnt._text, // 예매수
-        item.area._text, // 지역
+        areaText, // 지역
       ];
 
       db.query(sql, values, function (err, result) {
@@ -46,8 +59,10 @@ function saveBoxOffice() {
         console.log("Data inserted successfully.");
       });
     });
+    console.log("끝");
   });
 }
 
-// 데이터 저장 함수 호출
-saveBoxOffice(); // 예매상황판 저장
+
+// 모듈내보내기
+module.exports.saveBoxOffice=  saveBoxOffice;

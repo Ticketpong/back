@@ -60,15 +60,11 @@ app.use("/login", loginRouter);
 app.use("/main", mainRouter);
 app.use("/logout", logoutRouter);
 
-//manage 라우터 연결
-app.use("/manage", manageLogin);
-app.use("/manage/manageAdd", manageAdd);
-app.use("/manage/manageMain", manageMain);
-app.use("/manage/manageLogout", manageLogout);
+// 라우트 모듈 가져오기
+const apiRoutes = require("./routes/api");
 
-// 예약 라우터 연결
-app.use("/reservation", reservationRouter);
-app.use("/reservation/cancelReservation", cancelReservationRouter);
+// 라우트 모듈 적용
+app.use("/api", apiRoutes);
 
 //에러 핸들러
 // 404 에러 핸들러
@@ -84,10 +80,6 @@ app.use((err, req, res, next) => {
   res.locals.error = req.app.get("env") === "development" ? err : {};
   res.status(err.status || 500);
 });
-
-// 서버 실행 함수
-const apiRouter = require("./routes/api");
-app.use("/routes/api", apiRouter);
 
 // 서버 실행 포트 코드
 app.listen(port, () => {
