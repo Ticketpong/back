@@ -1,4 +1,4 @@
-const reservationService = require("../services/reservationService");
+const reservationService = require("../service/reservationService");
 
 // GET reservation
 // 예약 페이지 렌더링
