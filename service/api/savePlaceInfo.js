@@ -6,6 +6,7 @@ const { db } = require("../../config/mariadb"); // DB 정보 require
 
 //시설 상세 정보를 가져와서 데이터베이스에 저장하는 함수
 function savePlaceInfo() {
+  console.log("시설상세 먼저실행");
 
   const selectPlaceIdQuery = `SELECT mt10id FROM PERFORMANCE `;
 
@@ -41,7 +42,7 @@ function savePlaceInfo() {
       );
       
       const item = placeInfo.dbs.db;
-      const sql = `INSERT INTO PERFORMANCEHALL (mt10id, fcltynm, telno, la, lo) VALUES (?, ?, ?, ?, ?, ?)`;
+      const sql = `INSERT INTO PERFORMANCEHALL (mt10id, fcltynm, telno, la, lo) VALUES (?, ?, ?, ?, ?)`;
       
       const values = [
         placeId, // 공연시설ID
@@ -62,9 +63,10 @@ function savePlaceInfo() {
       });
     }
   });
+  console.log("공연시설정보 insert끝");
 }
 
 
 
 // 데이터 저장 함수 호출
-savePlaceInfo(); //공연시설 정보 저장
+module.exports = { savePlaceInfo };

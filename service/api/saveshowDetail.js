@@ -6,6 +6,7 @@ const { db } = require("../../config/mariadb"); // DB 정보 require
 
 // API에서 공연 정보를 가져와서 데이터베이스에 저장하는 함수
 function saveShowData() {
+  console.log("공연정보 먼저실행");
   const options = {
     method: "GET",
     url: "http://www.kopis.or.kr/openApi/restful/pblprfr",
@@ -27,12 +28,17 @@ function saveShowData() {
     const info = JSON.parse(
       xml2json.xml2json(body, { compact: true, spaces: 4 })
     );
+   
+    const showIds = info.dbs.db.map((item) => item.mt20id ? item.mt20id._text : null);
 
-    const showIds = info.dbs.db.map((item) => item.mt10id._text);
+    console.log(showIds);
 
-    showIds.forEach((showId) => {
-      getShowDetail(showId);
-    });
+    if(showIds != null) {
+      showIds.forEach((showId) => {
+        getShowDetail(showId);
+      });
+    }
+    console.log("공연정보 insert끝");
   });
 }
 
@@ -55,12 +61,15 @@ function getShowDetail(showId) {
       return;
     }
 
+
     // api 호출 결과
     const detailInfo = JSON.parse(
       xml2json.xml2json(body, { compact: true, spaces: 4 })
     );
-    const item = detailInfo.dbs.db; // dbs안에 db라는 이름의 리스트에서 데이터 꺼냄
 
+   
+    const item = detailInfo.dbs.db; // dbs안에 db라는 이름의 리스트에서 데이터 꺼냄
+   
     let styurl = "";
     if (item.styurls && item.styurls.styurl) {
       if (Array.isArray(item.styurls.styurl)) {
@@ -69,6 +78,7 @@ function getShowDetail(showId) {
         styurl = item.styurls.styurl._text;
       }
     }
+
 
     // 외래키로 연결되는 데이터들은 id값을 가져와서 저장
     //const manage_id = 'manager';
@@ -85,8 +95,8 @@ function getShowDetail(showId) {
           const values = [
             item.prfnm._text, // 공연제목
             'manager', //  아이디
-            item.mt10id, // 공연시설ID "mt10id"
-            item.mt20id, // 공연아이디 "mt20id"
+            item.mt10id._text, // 공연시설ID "mt10id"
+            item.mt20id._text, // 공연아이디 "mt20id"
             item.prfpdfrom._text, // 공연시작일
             item.prfpdto._text, // 공연종료일
             item.prfruntime._text, // 공연 런타임
@@ -113,4 +123,4 @@ function getShowDetail(showId) {
 }
 
 // 데이터 저장 함수 호출
-saveShowData(); // 공연정보 저장
+module.exports = { saveShowData, getShowDetail };
