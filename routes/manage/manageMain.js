@@ -1,11 +1,14 @@
 const express = require("express");
 const router = express.Router();
-const manageMain = require("../../controllers/infoController");
+const manage = require("../../controllers/infoController");
+const member = require("../../controllers/infoController");
 
-router.get("/manager", manageMain.getManageDetail);
+router.get("/manageList", manage.getManageList);
 
-router.put("/manager/edit", manageMain.editManage);
+router.get("/memberList", member.getMemeberList);
 
-router.delete("/manager", manageMain.deleteManage);
+router.put("/manageEdit", manage.editManage);
+
+router.delete("/delete", manage.deleteManage);
 
 module.exports = router;
