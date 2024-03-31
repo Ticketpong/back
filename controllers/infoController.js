@@ -100,10 +100,11 @@ const editManage = async (req, res) => {
 };
 
 // manage delete page
-const deleteManage = (req, res) => {
+const deleteManage = async (req, res) => {
   const { id } = req.body;
+  console.log(id);
   try {
-    const result = manageService.deleteManage(id);
+    const result = await manageService.deleteManage(id);
     console.log(result);
     res.status(200).send("manage delete success");
   } catch (error) {

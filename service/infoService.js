@@ -99,17 +99,19 @@ const editManage = (req, res) => {
 };
 
 // manage delete page
-const deleteManage = (req, res) => {
+const deleteManage = async (id) => {
   try {
     const sql = `DELETE FROM manage WHERE manage_id = ?`;
     let params = [id];
+    console.log(params);
 
     return new Promise((resolve, reject) => {
       dbconn.db.query(sql, params, (err, rows) => {
         if (err) {
           console.log(err);
-          resolve(false);
+          reject(err);
         } else {
+          console.log(sql);
           resolve(true);
         }
       });
