@@ -1,5 +1,21 @@
 const dbconn = require("../config/mariadb");
 
+// member get list
+const memeberList = (req, res) => {
+  const sql = `SELECT * FROM member`;
+  return new Promise((resolve, reject) => {
+    dbconn.db.query(sql, (err, rows) => {
+      if (err) {
+        console.log(err);
+        resolve(false);
+      } else {
+        console.log(rows);
+        resolve(rows);
+      }
+    });
+  });
+};
+
 // member edit page
 const editMember = (req, res) => {
   try {
@@ -25,7 +41,7 @@ const editMember = (req, res) => {
 // member delete page
 const deleteMember = (req, res) => {
   try {
-    const sql = `DELETE FROM member WHERE id = ?`;
+    const sql = `DELETE FROM member WHERE user_id = ?`;
     let params = [id];
 
     return new Promise((resolve, reject) => {
@@ -44,17 +60,17 @@ const deleteMember = (req, res) => {
   }
 };
 
-// manage get detail
-const manageDetail = (req, res) => {
-  const sql = `SELECT * FROM manage WHERE id = ?`;
+// manage get list
+const manageList = (req, res) => {
+  const sql = `SELECT * FROM manage`;
   return new Promise((resolve, reject) => {
-    dbconn.db.query(sql, [id], (err, rows) => {
+    dbconn.db.query(sql, (err, rows) => {
       if (err) {
         console.log(err);
         resolve(false);
       } else {
-        console.log(rows[0]);
-        resolve(rows[0]);
+        console.log(rows);
+        resolve(rows);
       }
     });
   });
@@ -63,7 +79,7 @@ const manageDetail = (req, res) => {
 // manage edit page
 const editManage = (req, res) => {
   try {
-    const sql = `UPDATE manage SET pw = ?, phone = ?, auth = ?, part = ? WHERE id = ?`;
+    const sql = `UPDATE manage SET manage_password = ?, manage_phone = ?,manage_auth = ?, manage_part = ? WHERE manage_id = ?`;
     let params = [pw, email, phone, auth, part, id];
 
     return new Promise((resolve, reject) => {
@@ -85,7 +101,7 @@ const editManage = (req, res) => {
 // manage delete page
 const deleteManage = (req, res) => {
   try {
-    const sql = `DELETE FROM manage WHERE id = ?`;
+    const sql = `DELETE FROM manage WHERE manage_id = ?`;
     let params = [id];
 
     return new Promise((resolve, reject) => {
@@ -105,9 +121,10 @@ const deleteManage = (req, res) => {
 };
 
 module.exports = {
+  memeberList,
   editMember,
   deleteMember,
-  manageDetail,
+  manageList,
   editManage,
   deleteManage,
 };
