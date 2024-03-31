@@ -15,6 +15,18 @@ const getMemberMain = async (req, res) => {
   }
 };
 
+//member List page
+const getMemeberList = async (req, res) => {
+  try {
+    const member = await memberService.memeberList();
+    console.log(member);
+    res.status(200).json(member);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Internal Server Error");
+  }
+};
+
 // member edit page
 const editMember = async (req, res) => {
   try {
@@ -41,8 +53,8 @@ const editMember = async (req, res) => {
 
 // member delete page
 const deleteMember = async (req, res) => {
+  const { id } = req.body;
   try {
-    const { id } = req.body;
     const result = await memberService.deleteMember(id);
     console.log(result);
     res.status(200).send("member main delete success");
@@ -52,11 +64,10 @@ const deleteMember = async (req, res) => {
   }
 };
 
-// manage get detail
-const getManageDetail = async (req, res) => {
+// manage get List
+const getManageList = async (req, res) => {
   try {
-    const id = req.params.id;
-    const member = await manageService.manageDetail(id);
+    const member = await manageService.manageList();
     console.log(member);
     res.status(200).json(member);
   } catch (error) {
@@ -68,7 +79,7 @@ const getManageDetail = async (req, res) => {
 // manage edit page
 const editManage = async (req, res) => {
   try {
-    const { id, pw, repw, phone, auth, part } = req.body;
+    const { pw, repw, phone, auth, part } = req.body;
     if (pw !== repw) {
       res.status(400).send("password is not same");
     } else {
@@ -90,8 +101,8 @@ const editManage = async (req, res) => {
 
 // manage delete page
 const deleteManage = (req, res) => {
+  const { id } = req.body;
   try {
-    const { id } = req.body;
     const result = manageService.deleteManage(id);
     console.log(result);
     res.status(200).send("manage delete success");
@@ -102,10 +113,11 @@ const deleteManage = (req, res) => {
 };
 
 module.exports = {
+  getMemeberList,
   getMemberMain,
   editMember,
   deleteMember,
-  getManageDetail,
+  getManageList,
   editManage,
   deleteManage,
 };
