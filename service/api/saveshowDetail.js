@@ -3,7 +3,7 @@ const xml2json = require("xml-js");
 
 const { db } = require("../../config/mariadb"); // DB 정보 require
 
-// API에서 공연 정보를 가져와서 데이터베이스에 저장하는 함수
+/// API에서 공연 정보를 가져와서 데이터베이스에 저장하는 함수
 function saveShowData() {
   console.log("공연정보 먼저실행");
   const options = {

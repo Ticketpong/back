@@ -48,7 +48,7 @@ router.get("/savePlaceInfo", async (req, res) => {
   }
 });
 
-// 예매상황판 정보 저장 라우트
+/// 예매상황판 정보 저장 라우트
 router.get("/saveBoxOffice", async (req, res) => {
   try {
     await saveBoxOffice(); // saveBoxOffice 함수 호출 및 완료 대기
