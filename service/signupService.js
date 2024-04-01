@@ -36,10 +36,10 @@ const memberSignup = async (
   });
 };
 
-const manageAdd = async (id, name, password, phone, role, part) => {
+const manageAdd = async (id, password, name, phone, role, part) => {
   let hash = bcrypt.hashSync(password);
   let sql = `INSERT INTO MANAGE VALUES (?, ?, ?, ?, ?, ?)`;
-  let params = [id, name, hash, phone, role, part];
+  let params = [id, hash, name, phone, role, part];
   console.log(sql);
 
   return new Promise((resolve, reject) => {
