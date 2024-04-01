@@ -57,18 +57,18 @@ const getManageSignup = (req, res, next) => {
 // POST signup(manage)
 // 관리자 추가 처리
 const manageAdd = async (req, res, next) => {
-  let { id, name, password, repassword, phone, role, part } = req.body;
+  let { id, password, repassword, name, phone, role, part } = req.body;
   if (password !== repassword) {
     res.status(400).send("비밀번호가 일치하지 않습니다.");
   }
   try {
     let result = await signupService.manageAdd(
-      id,
-      name,
-      password,
-      phone,
-      role,
-      part
+      id, // 아이디
+      password, // 비밀번호
+      name, // 이름
+      phone, // 전화번호
+      role, // 권한
+      part // 직급
     );
 
     if (result) {
