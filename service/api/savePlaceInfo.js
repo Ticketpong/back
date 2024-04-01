@@ -52,7 +52,7 @@ function savePlaceInfo() {
         item.lo._text, // 경도
       ];
     
-      // 쿼리 실행
+      //// 쿼리 실행
       db.query(sql, values, function (err, result) {
         if (err) {
           console.error("Error inserting data:", err);

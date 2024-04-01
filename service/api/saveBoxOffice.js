@@ -46,7 +46,7 @@ function saveBoxOffice() {
         item.mt20id._text, // 공연아이디
         item.rnum._text, // 순위
         item.prfdtcnt._text, // 예매수
-        areaText, // 지역
+        areaText, /// 지역
       ];
 
       db.query(sql, values, function (err, result) {

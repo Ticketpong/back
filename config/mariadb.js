@@ -1,4 +1,5 @@
 const mariadb = require("mysql2");
+// 비밀번호 1234
 
 info = {
   host: "localhost",
