@@ -79,45 +79,45 @@ function getShowDetail(showId) {
     }
 
     // 외래키로 연결되는 데이터들은 id값을 가져와서 저장
-    //const manage_id = 'manager';
-    //const managerIdQuery = `SELECT id FROM MANAGE WHERE manage_id = ?`;
+    const manage_id = "manager";
+    const managerIdQuery = `SELECT id FROM MANAGE WHERE manage_id = ?`;
 
-    //db.query(managerIdQuery, manage_id, function (err, manageResult) {
-    //  if (err) {
-    //    console.error("Error inserting data:", err);
-    //    return;
-    //  }
-
-    //const manegerId = manageResult[0].id;
-    const sql = `INSERT INTO PERFORMANCE (prfnm, manager_id, mt10id, mt20id,  prfpdfrom, prfpdto, prfruntime, pcseguidance, genrenm, prfstate, updatedate, poster, styurl, dtguidance, prfage) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-    const values = [
-      item.prfnm._text, // 공연제목
-      "manager", //  아이디
-      item.mt10id._text, // 공연시설ID "mt10id"
-      item.mt20id._text, // 공연아이디 "mt20id"
-      item.prfpdfrom._text, // 공연시작일
-      item.prfpdto._text, // 공연종료일
-      item.prfruntime._text, // 공연 런타임
-      item.pcseguidance._text, // 티켓가격
-      item.genrenm._text, // 장르
-      item.prfstate._text, // 공연상태
-      item.updatedate ? item.updatedate._text : null, // 최종수정일
-      item.poster._text, // 포스터 이미지 경로
-      styurl, // 소개 이미지
-      item.dtguidance._text, // 공연시간
-      item.prfage._text, // 관람등급
-    ];
-    // 쿼리 실행
-    db.query(sql, values, function (err, result) {
+    db.query(managerIdQuery, manage_id, function (err, manageResult) {
       if (err) {
         console.error("Error inserting data:", err);
-
         return;
       }
-      console.log("Data inserted successfully.");
+
+      //const manegerId = manageResult[0].id;
+      const sql = `INSERT INTO PERFORMANCE (prfnm, manager_id, mt10id, mt20id,  prfpdfrom, prfpdto, prfruntime, pcseguidance, genrenm, prfstate, updatedate, poster, styurl, dtguidance, prfage) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+      const values = [
+        item.prfnm._text, // 공연제목
+        manage_id, //  아이디
+        mt10id, // 공연시설ID
+        item.mt20id._text, // 공연아이디 "mt20id"
+        item.prfpdfrom._text, // 공연시작일
+        item.prfpdto._text, // 공연종료일
+        item.prfruntime._text, // 공연 런타임
+        item.pcseguidance._text, // 티켓가격
+        item.genrenm._text, // 장르
+        item.prfstate._text, // 공연상태
+        item.updatedate ? item.updatedate._text : null, // 최종수정일
+        item.poster._text, // 포스터 이미지 경로
+        styurl, // 소개 이미지
+        item.dtguidance._text, // 공연시간
+        item.prfage._text, // 관람등급
+      ];
+      // 쿼리 실행
+      db.query(sql, values, function (err, result) {
+        if (err) {
+          console.error("Error inserting data:", err);
+
+          return;
+        }
+        console.log("Data inserted successfully.");
+      });
     });
   });
-  //});
 }
 
 // 데이터 저장 함수 호출
