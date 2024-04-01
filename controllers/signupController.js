@@ -63,13 +63,12 @@ const manageAdd = async (req, res, next) => {
   }
   try {
     let result = await signupService.manageAdd(
-      id,
-      password,
-      repassword,
-      name,
-      phone,
-      role,
-      part
+      id, // 아이디
+      password, // 비밀번호
+      name, // 이름
+      phone, // 전화번호
+      role, // 권한
+      part // 직급
     );
 
     if (result) {
