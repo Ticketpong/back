@@ -67,6 +67,37 @@ function savePlaceInfo() {
 }
 
 
+// 시설 목록을 데이터베이스에 저장하는 함수
+function getSaveHallList() {
 
-// 데이터 저장 함수 호출
-module.exports = { savePlaceInfo };
+  const options = {
+    method: "GET",
+    url: `http://www.kopis.or.kr/openApi/restful/prfplc`,
+    qs: {
+      service   : "fa3c8f8cc2c94da2bf5e4a40f8d54321",
+      cpage     : 1,
+      rows      : 1000,
+    },
+  };
+
+    request(options, function (error, response, body) {
+      if (error) {
+        console.error("Error:", error);
+        return;
+      }
+    
+      const placeList = JSON.parse(
+        xml2json.xml2json(body, { compact: true, spaces: 4 })
+      );
+
+      const items = placeList.dbs;
+      console.log("-----------------------------------------------------------");
+
+      const placeIds = items.db.map((item) => item.mt10id._text);
+      console.log ("공연시설아이디들 : " + placeIds);
+})
+}
+
+savePlaceInfo(); //공연시설 정보 저장
+module.exports = { getSaveHallList, savePlaceInfo };
+
