@@ -9,15 +9,23 @@ const bodyParser = require("body-parser");
 
 // 서버 생성
 const app = express();
+const port = process.env.PORT || 8080;
+const corsOptions = {
+  origin: "*", // 모든 도메인 허용
+  credentials: true, // 쿠키를 전달하기 위한 설정
+  optionsSecSuccessStatus: 200, // 옵션 요청에 대한 응답 성공 상태
+};
 
-const port = 8080;
+// views 폴더 설정 및 ejs 엔진 설정
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "ejs");
 
 // 미들웨어 설정
 app.use(logger("dev")); // 로그 출력
 app.use(express.json()); // json 형식으로 데이터를 받아오기 위한 설정
 app.use(express.urlencoded({ extended: false })); // form 형식으로 데이터를 받아오기 위한 설정
 app.use(cookieParser()); // 쿠키 파싱 설정
-app.use(express.static(path.join(__dirname, "public"))); // 정적 파일 위치 u
+app.use(express.static(path.join(__dirname, "public"))); // 정적 파일 위치 설정
 app.use(
   session({
     secret: "keyboard",
@@ -26,15 +34,19 @@ app.use(
     store: new FileStore(),
   })
 );
-app.use(bodyParser.json()); // JSON 파싱을 위한 미들웨어
+app.use(cors(corsOptions));
 
-// View 엔진 및 뷰 경로 설정
-//app.set('views', path.join(__dirname, 'views'));
-//app.set('view engine', 'ejs');
+// 라우트 모듈 가져오기
+const apiRoutes = require("./routes/api");
 
 // 라우터 설정
 const indexRouter = require("./routes/index");
 
+// member 라우터 설정
+const signupRouter = require("./routes/member/signup");
+const loginRouter = require("./routes/member/login");
+const mainRouter = require("./routes/member/main");
+const logoutRouter = require("./routes/member/logout");
 // member 라우터 설정
 const signupRouter = require("./routes/member/signup");
 const loginRouter = require("./routes/member/login");
@@ -60,11 +72,31 @@ app.use("/login", loginRouter);
 app.use("/main", mainRouter);
 app.use("/logout", logoutRouter);
 
-// 라우트 모듈 가져오기
-const apiRoutes = require("./routes/api");
+//manage 라우터 연결
+app.use("/manage", manageLogin);
+app.use("/manage/manageAdd", manageAdd);
+app.use("/manage/manageMain", manageMain);
+app.use("/manage/manageLogout", manageLogout);
 
-// 미들웨어 등록
-app.use(express.json());
+//에러 핸들러
+// 404 에러 핸들러
+app.use((req, res, next) => {
+  const error = new Error(`${req.method} ${req.url} 라우터가 없습니다.`);
+  error.status = 404;
+  next(error);
+});
+
+// 서버쪽 에러 핸들러
+app.use((err, req, res, next) => {
+  res.locals.message = err.message;
+  res.locals.error = req.app.get("env") === "development" ? err : {};
+  res.status(err.status || 500);
+});
+
+// 서버 실행 함수
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
 
 // 라우트 모듈 적용
 app.use("/api", apiRoutes);
