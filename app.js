@@ -8,7 +8,7 @@ const FileStore = require("session-file-store")(session);
 
 // 서버 생성
 const app = express();
-const port = process.env.PORT || 8080;
+const port = 8080;
 const corsOptions = {
   origin: "*", // 모든 도메인 허용
   credentials: true, // 쿠키를 전달하기 위한 설정
