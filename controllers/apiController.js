@@ -1,5 +1,8 @@
 const hallService = require("../service/api/hallService");
+const showService = require("../service/api/showService");
+const resService = require("../service/api/resService");
 
+// GET hallDetail
 const getHallDetail = async (req, res) => {
   try {
     const result = await hallService.savePlaceId(); // savePlaceInfo 함수 호출 및 완료 대기
@@ -17,4 +20,34 @@ const getHallDetail = async (req, res) => {
   }
 };
 
-module.exports = { getHallDetail };
+// GET performanceDetail
+const getPerformanceDetail = async (req, res) => {
+  try {
+    const result = await showService.saveShowId(); // saveShowInfo 함수 호출 및 완료 대기
+    if (result === "error") {
+      res.status(400).send("Error saving performance info");
+    } else {
+      res.status(200).send(result);
+    }
+  } catch (error) {
+    console.error("Error saving performance info:", error);
+    res.status(500).send("Internal server error");
+  }
+};
+
+// GET BoxOffice
+const getResData = async (req, res) => {
+  try {
+    const result = await resService.getResData(); // saveResData 함수 호출 및 완료 대기
+    if (result === "error") {
+      res.status(400).send("Error saving rank data");
+    } else {
+      res.status(200).send(result);
+    }
+  } catch (error) {
+    console.log("getResData 에러:", error);
+    res.status(500).send("Internal server error");
+  }
+};
+
+module.exports = { getHallDetail, getPerformanceDetail, getResData };
