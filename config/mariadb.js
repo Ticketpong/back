@@ -4,7 +4,7 @@ info = {
   host: "localhost",
   user: "ticketpong",
   password: "ticketpong",
-  prot: 3306,
+  port: 3306,
   database: "ticketpong",
 };
 

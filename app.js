@@ -35,6 +35,9 @@ app.use(
 );
 app.use(cors(corsOptions));
 
+// 라우트 모듈 가져오기
+const apiRoutes = require("./routes/api");
+
 // 라우터 설정
 const indexRouter = require("./routes/index");
 
@@ -49,6 +52,9 @@ const manageLogin = require("./routes/manage/manageLogin");
 const manageAdd = require("./routes/manage/manageAdd");
 const manageMain = require("./routes/manage/manageMain");
 const manageLogout = require("./routes/manage/manageLogout");
+
+// 라우트 모듈 적용
+app.use("/api", apiRoutes);
 
 //라우터 연결
 app.use("/", indexRouter);
@@ -80,7 +86,7 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500);
 });
 
-// 서버 실행
+// 서버 실행 함수
 app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+  console.log(`Server is running on port ${port}`);
 });
