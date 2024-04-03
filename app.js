@@ -22,7 +22,7 @@ app.set("view engine", "ejs");
 // 미들웨어 설정
 app.use(logger("dev")); // 로그 출력
 app.use(express.json()); // json 형식으로 데이터를 받아오기 위한 설정
-app.use(express.urlencoded({ extended: false })); // form 형식으로 데이터를 받아오기 위한 설정
+app.use(express.urlencoded({ extended: true })); //post 요청을 객체로 받기 위한 설정
 app.use(cookieParser()); // 쿠키 파싱 설정
 app.use(express.static(path.join(__dirname, "public"))); // 정적 파일 위치 설정
 app.use(
