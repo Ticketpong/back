@@ -1,7 +1,7 @@
 const dbconn = require("../config/mariadb");
 
 // performance get list
-const performanceList = async (page) => {
+const performanceList = async () => {
   try {
     const ITEMS_PER_PAGE = 10; // items per page
     const offset = (page - 1) * ITEMS_PER_PAGE; // offset
@@ -9,8 +9,7 @@ const performanceList = async (page) => {
     const sql = `SELECT PERFORMANCE.*, PERFORMANCEHALL.*, BOXOFFICE.*
     FROM PERFORMANCE
     LEFT JOIN PERFORMANCEHALL ON PERFORMANCE.mt10id = PERFORMANCEHALL.mt10id
-    LEFT JOIN BOXOFFICE ON PERFORMANCE.mt20id = BOXOFFICE.mt20id
-    LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}`;
+    LEFT JOIN BOXOFFICE ON PERFORMANCE.mt20id = BOXOFFICE.mt20id`;
 
     return new Promise((resolve, reject) => {
       dbconn.db.query(sql, (err, rows) => {
