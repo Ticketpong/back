@@ -54,6 +54,9 @@ const manageMain = require("./routes/manage/manageMain");
 const manageLogout = require("./routes/manage/manageLogout");
 
 // 라우트 모듈 적용
+const homepage = require("./routes/homepage");
+
+// 라우트 모듈 적용
 app.use("/api", apiRoutes);
 
 //라우터 연결
@@ -70,6 +73,9 @@ app.use("/manage", manageLogin);
 app.use("/manage/manageAdd", manageAdd);
 app.use("/manage/manageMain", manageMain);
 app.use("/manage/manageLogout", manageLogout);
+
+//homepage 라우터 연결
+app.use("/homepage", homepage);
 
 //에러 핸들러
 // 404 에러 핸들러
