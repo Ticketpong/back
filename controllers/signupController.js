@@ -3,30 +3,21 @@ const signupService = require("../service/signupService");
 // POST signup(member)
 // 회원가입 처리
 const memberSignup = async (req, res, next) => {
-  let {
-    userid,
-    username,
-    password,
-    repassword,
-    useremail,
-    userphone,
-    address,
-    detailAddress,
-  } = req.body;
+  let { id, pw, repw, name, phone, email, address, detailAddress } = req.body;
 
   try {
-    if (password !== repassword) {
+    if (pw !== repw) {
       return res
         .status(400)
         .send("signup failed. 비밀번호가 일치하지 않습니다.");
     }
 
     let result = await signupService.memberSignup(
-      userid,
-      username,
-      password,
-      useremail,
-      userphone,
+      id,
+      pw,
+      name,
+      phone,
+      email,
       address,
       detailAddress
     );
@@ -65,7 +56,6 @@ const manageAdd = async (req, res, next) => {
     let result = await signupService.manageAdd(
       id,
       password,
-      repassword,
       name,
       phone,
       role,
