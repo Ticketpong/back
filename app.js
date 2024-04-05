@@ -54,7 +54,7 @@ const manageMain = require("./routes/manage/manageMain");
 const manageLogout = require("./routes/manage/manageLogout");
 
 // 라우트 모듈 적용
-const homepage = require("./routes/homepage");
+const homepage = require("./routes/homepage/homepage");
 
 // 라우트 모듈 적용
 app.use("/api", apiRoutes);

@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const homepage = require("../controller/homepageController");
+const homepage = require("../../controllers/homepageController");
 
 // Get 최신순 으로 8개의 공연을 가져옴
 router.get("/recent", homepage.recentPerformance);
