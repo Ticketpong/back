@@ -6,7 +6,7 @@ const savePlaceId = async () => {
   try {
     console.log("savePlaceId");
     const options = await axios.get(
-      "http://www.kopis.or.kr/openApi/restful/prfplc?service=3fe13cc59eba4d328faa4d0c7dff5b3e&cpage=1&rows=3000"
+      "http://www.kopis.or.kr/openApi/restful/prfplc?service=3fe13cc59eba4d328faa4d0c7dff5b3e&cpage=1&rows=500"
     );
 
     const xmlData = options.data;
@@ -53,26 +53,43 @@ const getPlaceDetail = async (mt10id, sidonm) => {
 
     const placeDetail = result.dbs.db;
 
-    const sql = `INSERT INTO PERFORMANCEHALL (mt10id, fcltynm, sidonm, telno, la, lo, adres) VALUES (?, ?, ?, ?, ?, ?, ?)`;
-    const params = [
-      mt10id, // mt10id
-      placeDetail.fcltynm._text || "-", // fcltynm
-      sidonm, // sidonm
-      placeDetail.telno._text ? placeDetail.telno._text : "-", // telno
-      placeDetail.la._text, // la
-      placeDetail.lo._text, // lo
-      placeDetail.adres._text || "-", // adres
-    ];
-    console.log(params);
-    // DB에 저장
+    const query = `SELECT * FROM PERFORMANCEHALL WHERE mt10id = ?`;
+    const params = [mt10id];
+    // DB에 이미 저장된 데이터가 있는지 확인
+
     new Promise((resolve, reject) => {
-      dbconn.db.query(sql, params, (err, result) => {
+      dbconn.db.query(query, params, (err, result) => {
         if (err) {
-          console.log("DB 저장 실패:", err);
+          console.log("DB 조회 실패:", err);
           reject(err);
         } else {
-          console.log("DB 저장 완료");
-          resolve(result);
+          console.log("DB 조회 완료");
+          if (result.length === 0) {
+            const sql = `INSERT INTO PERFORMANCEHALL (mt10id, fcltynm, sidonm, telno, la, lo, adres) VALUES (?, ?, ?, ?, ?, ?, ?)`;
+            const params = [
+              mt10id, // mt10id
+              placeDetail.fcltynm._text || "-", // fcltynm
+              sidonm, // sidonm
+              placeDetail.telno._text ? placeDetail.telno._text : "-", // telno
+              placeDetail.la._text, // la
+              placeDetail.lo._text, // lo
+              placeDetail.adres._text || "-", // adres
+            ];
+            console.log(params);
+            // DB에 저장
+
+            dbconn.db.query(sql, params, (err, result) => {
+              if (err) {
+                console.log("DB 저장 실패:", err);
+                reject(err);
+              } else {
+                console.log("DB 저장 완료");
+                resolve(result);
+              }
+            });
+          } else {
+            console.log("이미 저장된 데이터");
+          }
         }
       });
     });
