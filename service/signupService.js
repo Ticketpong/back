@@ -2,25 +2,17 @@ const dbconn = require("../model/dbPool");
 let bcrypt = require("bcrypt-nodejs");
 
 const memberSignup = async (
-  userid,
-  username,
-  password,
-  useremail,
-  userphone,
+  id,
+  pw,
+  name,
+  phone,
+  email,
   address,
   detailAddress
 ) => {
-  let hashedPassword = bcrypt.hashSync(password);
+  let hashedPassword = bcrypt.hashSync(pw);
   let sql = `INSERT INTO MEMBER VALUES (?, ?, ?, ?, ?, ?, ?)`;
-  let params = [
-    userid,
-    username,
-    hashedPassword,
-    useremail,
-    userphone,
-    address,
-    detailAddress,
-  ];
+  let params = [id, name, hashedPassword, email, phone, address, detailAddress];
   console.log(sql);
 
   return new Promise((resolve, reject) => {
