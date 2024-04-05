@@ -8,13 +8,10 @@ const memberLogin = async (req, res, next) => {
     let result = await loginService.memberLogin(id, pw);
     console.log(result);
     if (result) {
-      res.cookie("userId", id, {
-        expires: new Date(Date.now() + 3600000),
-        httpOnly: true,
-      });
       req.session.userId = id;
       req.session.isLogined = true;
-      res.status(200).json({ id: id, isLogined: true });
+      req.session.save();
+      res.status(200).send("login success");
     } else {
       res
         .status(400)
@@ -29,17 +26,24 @@ const memberLogin = async (req, res, next) => {
 // GET login
 // 로그인 페이지 렌더링
 const getLogin = (req, res, next) => {
-  res.status(200).send("login rendering success");
+  const { userId, isLogined } = req.session;
+  if (isLogined) {
+    res.status(200).json({ userId, isLogined });
+  }
+  res.status(400).send("login failed");
 };
 
 // Get logout
 // 로그아웃 처리
 const getLogout = (req, res, next) => {
   try {
-    delete req.session.userId;
-    delete req.session.isLogined;
-    res.clearCookie("userId");
-    res.status(200).json({ isLogined: false });
+    req.session.destroy((err) => {
+      if (err) {
+        console.log(err);
+        return res.status(500).send("logout failed");
+      }
+      return res.status(200).json({ isLogined: false });
+    });
   } catch (error) {
     console.log(error);
     res.status(500).send("logout failed");
@@ -48,7 +52,11 @@ const getLogout = (req, res, next) => {
 
 //get manageLogin
 const getManageLogin = (req, res, next) => {
-  res.status(200).send("login rendering success");
+  const { manageId, isLogined } = req.session;
+  if (isLogined) {
+    res.status(200).json({ manageId, isLogined });
+  }
+  res.status(400).send("login failed");
 };
 
 //post manageLogin
@@ -57,13 +65,10 @@ const postManageLogin = async (req, res, next) => {
   try {
     let result = await loginService.manageLogin(id, pw);
     if (result) {
-      res.cookie("userId", id, {
-        expires: new Date(Date.now() + 3600000),
-        httpOnly: true,
-      });
       req.session.manageId = id;
       req.session.isLogined = true;
-      res.status(200).json({ id: id, isLogined: true });
+      req.session.save();
+      res.status(200).send("login success");
     } else {
       res
         .status(400)
@@ -78,10 +83,13 @@ const postManageLogin = async (req, res, next) => {
 //get mangeLogout
 const getManageLogout = (req, res, next) => {
   try {
-    delete req.session.manageId;
-    delete req.session.isLogined;
-    res.clearCookie("manageId");
-    res.status(200).json({ isLogined: false });
+    req.session.destroy((err) => {
+      if (err) {
+        console.log(err);
+        return res.status(500).send("logout failed");
+      }
+      return res.status(200).json({ isLogined });
+    });
   } catch (error) {
     console.log(error);
     res.status(500).send("logout failed");
