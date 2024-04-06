@@ -47,4 +47,52 @@ const manageAdd = async (id, password, name, phone, role, part) => {
   });
 };
 
-module.exports = { memberSignup, manageAdd };
+// id 중복체크
+const idCheck = async (id) => {
+  let sql = `SELECT user_id FROM MEMBER WHERE user_id = ?`;
+  let params = [id];
+  console.log(sql);
+
+  return new Promise((resolve, reject) => {
+    dbconn.query(sql, params, (err, result) => {
+      try {
+        if (result.length === 0) {
+          console.log(result);
+          resolve(true);
+        } else {
+          console.log(result);
+          resolve(false);
+        }
+      } catch (error) {
+        console.log(error);
+        resolve(false);
+      }
+    });
+  });
+};
+
+// email 중복체크
+const emailCheck = async (email) => {
+  let sql = `SELECT user_email FROM MEMBER WHERE user_email = ?`;
+  let params = [email];
+  console.log(sql);
+
+  return new Promise((resolve, reject) => {
+    dbconn.query(sql, params, (err, result) => {
+      try {
+        if (result.length === 0) {
+          console.log(result);
+          resolve(true);
+        } else {
+          console.log(result);
+          resolve(false);
+        }
+      } catch (error) {
+        console.log(error);
+        resolve(false);
+      }
+    });
+  });
+};
+
+module.exports = { memberSignup, manageAdd, idCheck, emailCheck };
