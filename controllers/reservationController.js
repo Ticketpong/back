@@ -2,9 +2,9 @@ const reservationService = require("../services/reservationService");
 
 // GET reservation
 // 예약 페이지 렌더링
-const getReservation = async (req, res, next) => {
+const reservationList = async (req, res, next) => {
   try {
-    let result = await reservationService.getReservation();
+    let result = await reservationService.reservationList();
     res.status(200).json(result);
   } catch (error) {
     console.log(error);
@@ -17,28 +17,30 @@ const getReservation = async (req, res, next) => {
 const postReservation = async (req, res, next) => {
   try {
     let {
-      userId,
+      imp_uid,
+      buyer_name,
+      paid_amount,
+      prfnm,
+      selectdate,
+      selecttime,
       res_date,
-      date,
-      time,
       people,
       success,
       selectseat,
       watchstate,
-      prestate,
-      paid,
     } = req.body;
     let result = await reservationService.postReservation(
-      userId,
+      imp_uid,
+      buyer_name,
+      paid_amount,
+      prfnm,
+      selectdate,
+      selecttime,
       res_date,
-      date,
-      time,
       people,
       success,
       selectseat,
-      watchstate,
-      prestate,
-      paid
+      watchstate
     );
     if (result) {
       res.status(200).send("reservation success");
@@ -66,4 +68,4 @@ const cancelReservation = (req, res, next) => {
   }
 };
 
-module.exports = { getReservation, postReservation, cancelReservation };
+module.exports = { reservationList, postReservation, cancelReservation };

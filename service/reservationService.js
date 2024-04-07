@@ -2,85 +2,82 @@ const { db } = require("../config/mariadb");
 const dbconn = require("../model/dbPool");
 
 const postReservation = async (
-  userId,
+  imp_uid,
+  buyer_name,
+  paid_amount,
+  prfnm,
+  selectdate,
+  selecttime,
   res_date,
-  date,
-  time,
   people,
   success,
   selectseat,
-  watchstate,
-  prestate,
-  paid
+  watchstate
 ) => {
   return new Promise((resolve, reject) => {
-    const _sym = "abcdefghijklmnopqrstuvwxyz1234567890";
-    const imp_uid = "";
-    for (var i = 0; i < 20; i++) {
-      imp_uid += _sym[parseInt(Math.random() * _sym.length)];
-    }
-    console.log(imp_uid);
+    let userIdQuery = `SELECT user_id FROM MEMBER WHERE user_name = ?`;
+    let performanceIdQuery = `SELECT * FROM PERFORMANCE WHERE prfnm = ?`;
+    let reservationQuery = `INSERT INTO RESERVATION * VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
 
-    const manageIdQuery = `SELECT manage_id FROM PERFORMANCE WHERE manage_id = ?`;
-    const userIdQuery = `SELECT user_id FROM MEMBER WHERE user_id = ?`;
-    const mt10idQuery = `SELECT mt10id FROM PERFORMANCE WHERE mt10id = ?`;
-    const prfnmQuery = `SELECT prfnm FROM PERFORMANCE WHERE prfnm = ?`;
-
-    db.query(manageIdQuery, [manage_id], (err, manageResult) => {
+    dbconn.query(userIdQuery, [buyer_name], (err, userIdResult) => {
       if (err) {
         console.log(err);
-        resolve(false).send("manage_id error");
-      }
-      db.query(mt10idQuery, [mt10id], (err, mt10idResult) => {
-        if (err) {
-          console.log(err);
-          resolve(false).send("mt10id error");
-        }
-        db.query(prfnmQuery, [prfnm], (err, prfnmResult) => {
-          if (err) {
-            console.log(err);
-            resolve(false).send("prfnm error");
-          }
-          const manage_id = manageResult[0].manage_id;
-          const mt10id = mt10idResult[0].mt10id;
-          const prfnm = prfnmResult[0].prfnm;
-
-          let sql = `INSERT INTO RESERVATION VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)`;
-          let params = [
-            imp_uid,
-            userId,
-            manage_id,
-            mt10id,
-            prfnm,
-            res_date,
-            paid,
-            success,
-            watchstate,
-            (prestate = 0),
-            date,
-            time,
-            selectseat,
-            people,
-          ];
-
-          console.log(sql);
-
-          dbconn.query(sql, params, (err, result) => {
+        resolve(false);
+      } else {
+        let userId = userIdResult[0].user_id;
+        dbconn.query(
+          performanceIdQuery,
+          [prfnm],
+          (err, performanceIdResult) => {
             if (err) {
               console.log(err);
               resolve(false);
             } else {
-              console.log(result);
-              resolve(true);
+              let mt20id = performanceIdResult[0].mt20id;
+              let mt10id = performanceIdResult[0].mt10id;
+              let manage_id = performanceIdResult[0].manage_id;
+
+              if (selectseat === null) {
+                selectseat = " ";
+              }
+
+              let prestate = false;
+
+              let params = [
+                imp_uid,
+                mt20id,
+                manage_id,
+                mt10id,
+                userId,
+                res_date,
+                paid_amount,
+                success,
+                watchstate,
+                prestate,
+                selectdate,
+                selecttime,
+                selectseat,
+                people,
+              ];
+
+              dbconn.query(reservationQuery, params, (err, result) => {
+                if (err) {
+                  console.log(err);
+                  resolve(false);
+                } else {
+                  console.log(result);
+                  resolve(true);
+                }
+              });
             }
-          });
-        });
-      });
+          }
+        );
+      }
     });
   });
 };
 
-const getReservation = async () => {
+const reservationList = async () => {
   return new Promise((resolve, reject) => {
     let sql = `SELECT * FROM RESERVATION where user_id = ?`;
     dbconn.query(sql, (err, result) => {
@@ -110,4 +107,4 @@ const cancelReservation = (imp_uid) => {
   });
 };
 
-module.exports = { postReservation, getReservation, cancelReservation };
+module.exports = { postReservation, reservationList, cancelReservation };
