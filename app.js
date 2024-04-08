@@ -56,7 +56,6 @@ const manageLogout = require("./routes/manage/manageLogout");
 
 // 예약 라우터 설정
 const reservationRouter = require("./routes/reservation/reservation");
-const cancelReservationRouter = require("./routes/reservation/cancelReservation");
 
 //라우터 연결
 app.use("/", indexRouter);
