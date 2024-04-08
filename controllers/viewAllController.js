@@ -22,8 +22,4 @@ const viewAll = async (req, res, next) => {
   }
 };
 
-// 장르별로 공연 가져오기
-
-// 위치기반으로 공연 가져오기
-
 module.exports = { viewAll, ranking };
