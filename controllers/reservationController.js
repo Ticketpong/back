@@ -12,6 +12,19 @@ const reservationList = async (req, res, next) => {
   }
 };
 
+// POST memberInfo
+// 예약자 정보
+const memberInfo = async (req, res, next) => {
+  try {
+    let { user_id } = req.body;
+    let result = await reservationService.memberInfo(user_id);
+    res.status(200).json(result);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("member info failed");
+  }
+};
+
 // POST reservation
 // 예약 처리
 const postReservation = async (req, res, next) => {
@@ -70,4 +83,9 @@ const cancelReservation = (req, res, next) => {
   }
 };
 
-module.exports = { reservationList, postReservation, cancelReservation };
+module.exports = {
+  reservationList,
+  memberInfo,
+  postReservation,
+  cancelReservation,
+};

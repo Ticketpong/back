@@ -1,6 +1,14 @@
 const { db } = require("../config/mariadb");
 const dbconn = require("../model/dbPool");
 
+// memberInfo
+const memberInfo = async (user_id) => {
+  let sql = `SELECT * FROM MEMBER WHERE user_id = ?`;
+  let params = [user_id];
+  await dbconns(sql, params);
+};
+
+// postReservation
 const postReservation = async (
   imp_uid,
   mt20id,
@@ -47,6 +55,7 @@ const postReservation = async (
   });
 };
 
+// dbconns
 const dbconns = (query, params) => {
   return new Promise((resolve, reject) => {
     dbconn.query(query, params, (err, result) => {
@@ -60,16 +69,23 @@ const dbconns = (query, params) => {
   });
 };
 
+// reservationList
 const reservationList = async (user_id) => {
   let sql = `SELECT * FROM RESERVATION where user_id = ?`;
   let params = [user_id];
   await dbconns(sql, params);
 };
 
+// cancelReservation
 const cancelReservation = async (imp_uid) => {
   let sql = `DELETE FROM RESERVATION WHERE imp_uid = ?`;
   let params = [imp_uid];
   await dbconns(sql, params);
 };
 
-module.exports = { postReservation, reservationList, cancelReservation };
+module.exports = {
+  postReservation,
+  memberInfo,
+  reservationList,
+  cancelReservation,
+};

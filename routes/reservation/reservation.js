@@ -6,6 +6,8 @@ router.get("/reservationList", reservation.reservationList);
 
 router.post("/", reservation.postReservation);
 
+router.post("/member", resservation.memberInfo);
+
 router.delete("/cancel", reservation.cancelReservation);
 
 module.exports = router;
