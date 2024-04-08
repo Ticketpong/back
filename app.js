@@ -12,7 +12,7 @@ const port = 8080;
 const corsOptions = {
   origin: "*", // 모든 도메인 허용
   credentials: true, // 쿠키를 전달하기 위한 설정
-  optionsSecSuccessStatus: 200, // 옵션 요청에 대한 응답 성공 상태
+  optionsSecSuccessStatus: 200, //
 };
 
 // views 폴더 설정 및 ejs 엔진 설정
