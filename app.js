@@ -60,7 +60,7 @@ const homepage = require("./routes/homepage/homepage");
 const viewAll = require("./routes/viewall");
 
 //reservation 라우트 설정
-const reservation = require("./routes/reservation");
+const reservation = require("./routes/reservation/reservation");
 
 // 라우트 모듈 적용
 app.use("/api", apiRoutes);
