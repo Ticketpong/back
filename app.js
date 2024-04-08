@@ -47,11 +47,6 @@ const signupRouter = require("./routes/member/signup");
 const loginRouter = require("./routes/member/login");
 const mainRouter = require("./routes/member/main");
 const logoutRouter = require("./routes/member/logout");
-// member 라우터 설정
-const signupRouter = require("./routes/member/signup");
-const loginRouter = require("./routes/member/login");
-const mainRouter = require("./routes/member/main");
-const logoutRouter = require("./routes/member/logout");
 
 //manage 라우터 설정
 const manageLogin = require("./routes/manage/manageLogin");
@@ -80,7 +75,6 @@ app.use("/manage/manageLogout", manageLogout);
 
 // 예약 라우터 연결
 app.use("/reservation", reservationRouter);
-app.use("/reservation/cancelReservation", cancelReservationRouter);
 
 //에러 핸들러
 // 404 에러 핸들러
