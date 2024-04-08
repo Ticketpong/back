@@ -5,7 +5,16 @@ const dbconn = require("../model/dbPool");
 const memberInfo = async (user_id) => {
   let sql = `SELECT * FROM MEMBER WHERE user_id = ?`;
   let params = [user_id];
-  await dbconns(sql, params);
+  return new Promise((resolve, reject) => {
+    dbconn.query(sql, params, (err, result) => {
+      if (err) {
+        console.log(err);
+        resolve(false);
+      } else {
+        resolve(result);
+      }
+    });
+  });
 };
 
 // postReservation

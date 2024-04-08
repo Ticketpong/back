@@ -1,4 +1,4 @@
-const reservationService = require("../services/reservationService");
+const reservationService = require("../service/reservationService");
 
 // GET reservation
 // 예약 페이지 렌더링
@@ -12,7 +12,7 @@ const reservationList = async (req, res, next) => {
   }
 };
 
-// POST memberInfo
+// get memberInfo
 // 예약자 정보
 const memberInfo = async (req, res, next) => {
   try {
