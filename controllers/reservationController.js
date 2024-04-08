@@ -12,7 +12,7 @@ const reservationList = async (req, res, next) => {
   }
 };
 
-// get memberInfo
+// post memberInfo
 // 예약자 정보
 const memberInfo = async (req, res, next) => {
   try {

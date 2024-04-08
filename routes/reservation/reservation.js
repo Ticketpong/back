@@ -6,7 +6,7 @@ router.get("/reservationList", reservation.reservationList);
 
 router.post("/", reservation.postReservation);
 
-router.get("/member", reservation.memberInfo);
+router.post("/member", reservation.memberInfo);
 
 router.delete("/cancel", reservation.cancelReservation);
 
