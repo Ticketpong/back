@@ -59,6 +59,9 @@ const manageLogout = require("./routes/manage/manageLogout");
 const homepage = require("./routes/homepage/homepage");
 const viewAll = require("./routes/viewall");
 
+//reservation 라우트 설정
+const reservation = require("./routes/reservation");
+
 // 라우트 모듈 적용
 app.use("/api", apiRoutes);
 
@@ -81,6 +84,9 @@ app.use("/manage/manageLogout", manageLogout);
 //homepage 라우터 연결
 app.use("/homepage", homepage);
 app.use("/viewAll", viewAll);
+
+//reservation 라우터 연결
+app.use("/reservation", reservation);
 
 //에러 핸들러
 // 404 에러 핸들러
