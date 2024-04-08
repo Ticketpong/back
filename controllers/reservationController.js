@@ -18,29 +18,31 @@ const postReservation = async (req, res, next) => {
   try {
     let {
       imp_uid,
-      buyer_name,
+      mt20id,
+      mt10id,
+      user_id,
+      res_date,
       paid_amount,
-      prfnm,
+      success,
+      watchstate,
       selectdate,
       selecttime,
-      res_date,
-      people,
-      success,
       selectseat,
-      watchstate,
+      people,
     } = req.body;
     let result = await reservationService.postReservation(
       imp_uid,
-      buyer_name,
+      mt20id,
+      mt10id,
+      user_id,
+      res_date,
       paid_amount,
-      prfnm,
+      success,
+      watchstate,
       selectdate,
       selecttime,
-      res_date,
-      people,
-      success,
       selectseat,
-      watchstate
+      people
     );
     if (result) {
       res.status(200).send("reservation success");
