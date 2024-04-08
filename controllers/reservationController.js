@@ -16,6 +16,7 @@ const reservationList = async (req, res, next) => {
 // 예약자 정보
 const memberInfo = async (req, res, next) => {
   let { user_id } = req.body;
+  console.log(user_id);
   try {
     let result = await reservationService.memberInfo(user_id);
     res.status(200).json(result);
