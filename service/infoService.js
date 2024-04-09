@@ -1,4 +1,48 @@
 const dbconn = require("../config/mariadb");
+const bcrypt = require("bcrypt-nodejs");
+
+// member postmain page
+const postMember = (id) => {
+  const sql = `SELECT * FROM member WHERE user_id = ?`;
+  let params = [id];
+
+  return new Promise((resolve, reject) => {
+    dbconn.db.query(sql, params, (err, rows) => {
+      if (err) {
+        console.log(err);
+        resolve(false);
+      } else {
+        resolve(rows[0]);
+      }
+    });
+  });
+};
+
+// post member Pwcheck
+const postMemberPwCheck = (id, pw) => {
+  const sql = `SELECT * FROM member WHERE user_id = ? `;
+  let params = [id, pw];
+
+  return new Promise((resolve, reject) => {
+    dbconn.db.query(sql, params, (err, rows) => {
+      if (err || rows.length === 0) {
+        console.log(err);
+        resolve(false);
+      } else {
+        console.log(rows[0].user_id, rows[0].user_password);
+        bcrypt.compare(pw, rows[0].user_password, (err, isMatch) => {
+          if (err || !isMatch) {
+            console.log("비밀번호 불일치");
+            resolve(false);
+          } else {
+            console.log("비밀번호 일치");
+            resolve(true);
+          }
+        });
+      }
+    });
+  });
+};
 
 // member get list
 const memeberList = (req, res) => {
@@ -126,6 +170,8 @@ const deleteManage = async (id) => {
 };
 
 module.exports = {
+  postMember,
+  postMemberPwCheck,
   memeberList,
   editMember,
   deleteMember,

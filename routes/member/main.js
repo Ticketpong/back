@@ -3,7 +3,7 @@ const router = express.Router();
 const memberMain = require("../../controllers/infoController");
 const performance = require("../../controllers/performanceController");
 
-router.get("/main", memberMain.getMemberMain);
+router.post("/", memberMain.postMemberPwCheck);
 
 router.put("/edit", memberMain.editMember);
 

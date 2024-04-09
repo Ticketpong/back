@@ -1,17 +1,27 @@
 const memberService = require("../service/infoService");
 const manageService = require("../service/infoService");
 
-// member main page
-const getMemberMain = async (req, res) => {
+// member postmain page
+const postMember = async (req, res) => {
   try {
-    res.status(200).json({
-      title: "member main",
-      usernamd: req.session.userId,
-      isLogined: req.session.isLogined,
-    });
+    const { id } = req.body;
+    const result = await memberService.postMember(id);
+    res.status(200).json(result);
   } catch (error) {
     console.log(error);
-    res.status(500).send("Internal Server Error");
+    res.status(400).send("member main post failed");
+  }
+};
+
+// post member Pwcheck
+const postMemberPwCheck = async (req, res) => {
+  const { id, pw } = req.body;
+  try {
+    const result = await memberService.postMemberPwCheck(id, pw);
+    res.status(200).json(result);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send("member main post failed");
   }
 };
 
@@ -114,8 +124,9 @@ const deleteManage = async (req, res) => {
 };
 
 module.exports = {
+  postMember,
+  postMemberPwCheck,
   getMemeberList,
-  getMemberMain,
   editMember,
   deleteMember,
   getManageList,
