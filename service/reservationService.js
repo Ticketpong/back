@@ -92,25 +92,21 @@ const postReservation = async (
   });
 };
 
-// dbconns
-const dbconns = (query, params) => {
-  return new Promise((resolve, reject) => {
-    dbconn.db.query(query, params, (err, result) => {
-      if (err) {
-        console.log(err);
-        resolve(false);
-      } else {
-        resolve(result);
-      }
-    });
-  });
-};
-
 // cancelReservation
 const cancelReservation = async (imp_uid) => {
   let sql = `DELETE FROM RESERVATION WHERE imp_uid = ?`;
   let params = [imp_uid];
-  await dbconns(sql, params);
+
+  return new Promise((resolve, reject) => {
+    dbconn.db.query(sql, params, (err, result) => {
+      if (err) {
+        console.log(err);
+        resolve(false);
+      } else {
+        resolve(true);
+      }
+    });
+  });
 };
 
 // discountCard
