@@ -32,8 +32,8 @@ const postReservation = async (
   selectseat,
   people
 ) => {
-  let manageidQuery = `SELECT * FROM PERFORMANCE WHERE mt20id = ?`;
-  let reservationQuery = `INSERT INTO RESERVATION * VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
+  let manageidQuery = `SELECT manage_id FROM PERFORMANCE WHERE mt20id = ?`;
+  let reservationQuery = `INSERT INTO RESERVATION VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
 
   return new Promise((resolve, reject) => {
     dbconn.query(manageidQuery, [mt20id], (err, result) => {
@@ -45,7 +45,7 @@ const postReservation = async (
         const params = [
           imp_uid,
           mt20id,
-          result[0].manageid,
+          result[0].manage_id,
           mt10id,
           user_id,
           res_date,
@@ -58,7 +58,14 @@ const postReservation = async (
           selectseat,
           people,
         ];
-        dbconns(reservationQuery, params);
+        dbconn.query(reservationQuery, params, (err, result) => {
+          if (err) {
+            console.log(err);
+            resolve(false);
+          } else {
+            resolve(true);
+          }
+        });
       }
     });
   });
