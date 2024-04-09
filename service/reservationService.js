@@ -42,10 +42,12 @@ const postReservation = async (
         resolve(false);
       } else {
         let prestate = false;
+        console.log(result[0].manage_id);
+        manage_id = result[0].manage_id;
         const params = [
           imp_uid,
           mt20id,
-          result[0].manage_id,
+          manage_id,
           mt10id,
           user_id,
           res_date,
