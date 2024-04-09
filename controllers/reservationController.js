@@ -1,11 +1,10 @@
-const { isReadable } = require("nodemailer/lib/xoauth2");
 const reservationService = require("../service/reservationService");
 
-// GET reservation
-// 예약 페이지 렌더링
+// post reservationList
 const reservationList = async (req, res, next) => {
+  let { id } = req.body;
   try {
-    let result = await reservationService.reservationList();
+    let result = await reservationService.reservationList(id);
     res.status(200).json(result);
   } catch (error) {
     console.log(error);

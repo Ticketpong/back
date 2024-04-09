@@ -1,12 +1,31 @@
-const { db } = require("../config/mariadb");
-const dbconn = require("../model/dbPool");
+const dbconn = require("../config/mariadb");
+
+// reservationList
+const reservationList = async (id) => {
+  let sql = `SELECT * FROM RESERVATION WHERE user_id = ?`;
+  let params = [id];
+
+  console.log(sql, params);
+
+  return new Promise((resolve, reject) => {
+    dbconn.db.query(sql, params, (err, result) => {
+      console.log(result);
+      if (err) {
+        console.log(err);
+        resolve(false);
+      } else {
+        resolve(result);
+      }
+    });
+  });
+};
 
 // memberInfo
 const memberInfo = async (user_id) => {
   let sql = `SELECT * FROM MEMBER WHERE user_id = ?`;
   let params = [user_id];
   return new Promise((resolve, reject) => {
-    dbconn.query(sql, params, (err, result) => {
+    dbconn.db.query(sql, params, (err, result) => {
       if (err) {
         console.log(err);
         resolve(false);
@@ -36,7 +55,7 @@ const postReservation = async (
   let reservationQuery = `INSERT INTO RESERVATION VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
 
   return new Promise((resolve, reject) => {
-    dbconn.query(manageidQuery, [mt20id], (err, result) => {
+    dbconn.db.query(manageidQuery, [mt20id], (err, result) => {
       if (err) {
         console.log(err);
         resolve(false);
@@ -60,7 +79,7 @@ const postReservation = async (
           selectseat,
           people,
         ];
-        dbconn.query(reservationQuery, params, (err, result) => {
+        dbconn.db.query(reservationQuery, params, (err, result) => {
           if (err) {
             console.log(err);
             resolve(false);
@@ -76,7 +95,7 @@ const postReservation = async (
 // dbconns
 const dbconns = (query, params) => {
   return new Promise((resolve, reject) => {
-    dbconn.query(query, params, (err, result) => {
+    dbconn.db.query(query, params, (err, result) => {
       if (err) {
         console.log(err);
         resolve(false);
@@ -85,13 +104,6 @@ const dbconns = (query, params) => {
       }
     });
   });
-};
-
-// reservationList
-const reservationList = async (user_id) => {
-  let sql = `SELECT * FROM RESERVATION where user_id = ?`;
-  let params = [user_id];
-  await dbconns(sql, params);
 };
 
 // cancelReservation
@@ -107,7 +119,7 @@ const discountCard = async (code) => {
   let params = [code];
 
   return new Promise((resolve, reject) => {
-    dbconn.query(sql, params, (err, result) => {
+    dbconn.db.query(sql, params, (err, result) => {
       if (err) {
         console.log(err);
         resolve(false);
@@ -119,9 +131,9 @@ const discountCard = async (code) => {
 };
 
 module.exports = {
+  reservationList,
   postReservation,
   memberInfo,
-  reservationList,
   cancelReservation,
   discountCard,
 };
