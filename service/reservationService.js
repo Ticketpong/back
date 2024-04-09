@@ -101,9 +101,27 @@ const cancelReservation = async (imp_uid) => {
   await dbconns(sql, params);
 };
 
+// discountCard
+const discountCard = async (code) => {
+  let sql = `SELECT * FROM DISCOUNT WHERE code = ?`;
+  let params = [code];
+
+  return new Promise((resolve, reject) => {
+    dbconn.query(sql, params, (err, result) => {
+      if (err) {
+        console.log(err);
+        resolve(false);
+      } else {
+        resolve(result);
+      }
+    });
+  });
+};
+
 module.exports = {
   postReservation,
   memberInfo,
   reservationList,
   cancelReservation,
+  discountCard,
 };
