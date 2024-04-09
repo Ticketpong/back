@@ -1,10 +1,10 @@
 const reservationService = require("../service/reservationService");
 
-// GET reservation
-// 예약 페이지 렌더링
+// post reservationList
 const reservationList = async (req, res, next) => {
+  let { id } = req.body;
   try {
-    let result = await reservationService.reservationList();
+    let result = await reservationService.reservationList(id);
     res.status(200).json(result);
   } catch (error) {
     console.log(error);
@@ -69,10 +69,10 @@ const postReservation = async (req, res, next) => {
   }
 };
 
-const cancelReservation = (req, res, next) => {
+const cancelReservation = async (req, res, next) => {
+  let { imp_uid } = req.body;
   try {
-    let { imp_uid } = req.body;
-    let result = reservationService.cancelReservation(imp_uid);
+    let result = await reservationService.cancelReservation(imp_uid);
     if (result) {
       res.status(200).send("cancel success");
     } else {
@@ -84,9 +84,25 @@ const cancelReservation = (req, res, next) => {
   }
 };
 
+const discountCard = async (req, res, next) => {
+  let { code } = req.body;
+  try {
+    let result = await reservationService.discountCard(code);
+    if (result) {
+      res.status(200).json(result);
+    } else {
+      res.status(400).send("discount failed");
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("discount failed");
+  }
+};
+
 module.exports = {
   reservationList,
   memberInfo,
   postReservation,
   cancelReservation,
+  discountCard,
 };
