@@ -20,7 +20,7 @@ const memeberList = (req, res) => {
 };
 
 // member edit page
-const editMember = (req, res) => {
+const editMember = (id, pw, email, phone, address, detailAddress) => {
   try {
     const sql = `UPDATE member SET pw = ?, email = ?, phone = ?, address = ?, detailAddress = ? WHERE id = ?`;
     let params = [pw, email, phone, address, detailAddress, id];
@@ -79,8 +79,31 @@ const manageList = (req, res) => {
   });
 };
 
+// manage get edit
+const getManageProfile = (id) => {
+  try {
+    const sql = `SELECT * FROM manage WHERE manage_id = ?`;
+    let params = [id];
+
+    return new Promise((resolve, reject) => {
+      dbconn.db.query(sql, params, (err, rows) => {
+        if (err) {
+          console.log(err);
+          resolve(false);
+        } else {
+          console.log(rows);
+          resolve(rows);
+        }
+      });
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Internal Server Error");
+  }
+};
+
 // manage edit page
-const editManage = (req, res) => {
+const editManage = (id, pw, email, phone, auth, part) => {
   try {
     const sql = `UPDATE manage SET manage_password = ?, manage_phone = ?,manage_auth = ?, manage_part = ? WHERE manage_id = ?`;
     let params = [pw, email, phone, auth, part, id];
@@ -130,6 +153,7 @@ module.exports = {
   editMember,
   deleteMember,
   manageList,
+  getManageProfile,
   editManage,
   deleteManage,
 };

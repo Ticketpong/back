@@ -3,12 +3,16 @@ const router = express.Router();
 const memberMain = require("../../controllers/infoController");
 const performance = require("../../controllers/performanceController");
 
-router.get("/main", memberMain.getMemberMain);
+// get member
+router.get("/member", memberMain.getMemberMain);
 
+// member edit
 router.put("/edit", memberMain.editMember);
 
-router.delete("/edit", memberMain.deleteMember);
+// member delete
+router.delete("/delete", memberMain.deleteMember);
 
+// get performance list
 router.get("/list", performance.getPerformanceList);
 
 module.exports = router;
