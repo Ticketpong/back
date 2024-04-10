@@ -3,10 +3,7 @@ const dbconn = require("../config/mariadb");
 // performance get list
 const performanceList = async () => {
   try {
-    const sql = `SELECT P.* , PH.*, B.*
-    FROM PERFORMANCE P
-    LEFT JOIN PERFORMANCEHALL PH ON P.mt10id = PH.mt10id
-    LEFT JOIN BOXOFFICE B ON P.mt20id = B.mt20id`;
+    const sql = `SELECT * FROM PERFORMANCE`;
 
     return new Promise((resolve, reject) => {
       dbconn.db.query(sql, (err, rows) => {
