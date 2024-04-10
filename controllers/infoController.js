@@ -3,13 +3,17 @@ const manageService = require("../service/infoService");
 
 // member postmain page
 const postMember = async (req, res) => {
+  const { id } = req.body;
   try {
-    const { id } = req.body;
     const result = await memberService.postMember(id);
-    res.status(200).json(result);
+    if (result) {
+      res.status(200).json(result);
+    } else {
+      res.status(400).send("member main post failed");
+    }
   } catch (error) {
     console.log(error);
-    res.status(400).send("member main post failed");
+    res.status(500).send("member main post failed");
   }
 };
 
@@ -39,8 +43,8 @@ const getMemeberList = async (req, res) => {
 
 // member edit page
 const editMember = async (req, res) => {
+  let { id, pw, repw, email, address, detailAddress } = req.body;
   try {
-    const { id, pw, repw, email, phone, address, detailAddress } = req.body;
     if (pw !== repw) {
       res.status(400).send("password is not same");
     } else {
@@ -48,7 +52,6 @@ const editMember = async (req, res) => {
         id,
         pw,
         email,
-        phone,
         address,
         detailAddress
       );

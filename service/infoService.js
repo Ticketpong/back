@@ -64,10 +64,11 @@ const memeberList = (req, res) => {
 };
 
 // member edit page
-const editMember = (req, res) => {
+const editMember = (id, pw, email, address, detailAddress) => {
   try {
-    const sql = `UPDATE member SET pw = ?, email = ?, phone = ?, address = ?, detailAddress = ? WHERE id = ?`;
-    let params = [pw, email, phone, address, detailAddress, id];
+    let hash = bcrypt.hashSync(pw);
+    const sql = `UPDATE member SET user_password= ?, user_email = ?, address = ?, detailAddress = ? WHERE user_id = ?`;
+    let params = [hash, email, address, detailAddress, id];
 
     return new Promise((resolve, reject) => {
       dbconn.db.query(sql, params, (err, rows) => {
@@ -86,7 +87,7 @@ const editMember = (req, res) => {
 };
 
 // member delete page
-const deleteMember = (req, res) => {
+const deleteMember = (id) => {
   try {
     const sql = `DELETE FROM member WHERE user_id = ?`;
     let params = [id];
