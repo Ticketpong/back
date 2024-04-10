@@ -30,9 +30,46 @@ const deletePerformance = async (req, res) => {
 };
 
 const addPerformance = async (req, res) => {
+  let {
+    mt20id,
+    manage_id,
+    mt10id,
+    prfnm,
+    prfpdfrom,
+    prfpdto,
+    prfruntime,
+    pcseguidance,
+    genrenm,
+    prfstate,
+    update,
+    poster,
+    styurl,
+    dtguidancem,
+    post,
+    prfage,
+  } = req.body;
   try {
-    const result = await performanceService.addPerformance(req.body);
-    res.status(200).json(result);
+    const result = await performanceService.addPerformance({
+      mt20id,
+      manage_id,
+      mt10id,
+      prfnm,
+      prfpdfrom,
+      prfpdto,
+      prfruntime,
+      pcseguidance,
+      genrenm,
+      prfstate,
+      update,
+      poster,
+      styurl,
+      dtguidancem,
+      post,
+      prfage,
+    });
+    if (result) {
+      res.status(200).json({ message: "success" });
+    }
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
