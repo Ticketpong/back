@@ -2,7 +2,10 @@ const dbconn = require("../config/mariadb");
 
 // member get list
 const memeberList = (req, res) => {
-  const sql = `SELECT * FROM member`;
+  const sql = `select m.*, count(r.user_id) AS res_count
+  from MEMBER m
+  left join RESERVATION r on m.user_id = r.user_id
+  group by m.user_id`;
   return new Promise((resolve, reject) => {
     dbconn.db.query(sql, (err, rows) => {
       if (err) {
