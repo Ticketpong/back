@@ -28,7 +28,7 @@ const memberLogin = (id, pw, next) => {
 };
 
 const manageLogin = (id, pw, next) => {
-  let sql = `SELECT * FROM MEMBER WHERE manage_id = ?`;
+  let sql = `SELECT * FROM MANAGE WHERE manage_id = ?`;
 
   console.log(sql);
 
@@ -39,9 +39,9 @@ const manageLogin = (id, pw, next) => {
         resolve(false);
       }
 
-      console.log(result[0].user_id, result[0].user_password);
+      console.log(result[0].manage_id, result[0].manage_password);
 
-      bcrypt.compare(pw, result[0].user_password, (err, isMatch) => {
+      bcrypt.compare(pw, result[0].manage_password, (err, isMatch) => {
         if (err || !isMatch) {
           console.log("비밀번호 불일치");
           resolve(false);
