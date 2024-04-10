@@ -3,10 +3,10 @@ const dbconn = require("../config/mariadb");
 // performance get list
 const performanceList = async () => {
   try {
-    const sql = `SELECT PERFORMANCE.*, PERFORMANCEHALL.*, BOXOFFICE.*
-    FROM PERFORMANCE
-    LEFT JOIN PERFORMANCEHALL ON PERFORMANCE.mt10id = PERFORMANCEHALL.mt10id
-    LEFT JOIN BOXOFFICE ON PERFORMANCE.mt20id = BOXOFFICE.mt20id`;
+    const sql = `SELECT P.* , PH.*, B.*
+    FROM PERFORMANCE P
+    LEFT JOIN PERFORMANCEHALL PH ON P.mt10id = PH.mt10id
+    LEFT JOIN BOXOFFICE B ON P.mt20id = B.mt20id`;
 
     return new Promise((resolve, reject) => {
       dbconn.db.query(sql, (err, rows) => {
@@ -28,7 +28,7 @@ const performanceList = async () => {
 // performance delete
 const deletePerformance = (mt20id) => {
   try {
-    const sql = `DELETE FROM performance WHERE mt20id = ?`;
+    const sql = `DELETE FROM PERFORMANCE WHERE mt20id = ?`;
     let params = [mt20id];
 
     return new Promise((resolve, reject) => {
@@ -48,12 +48,81 @@ const deletePerformance = (mt20id) => {
   }
 };
 
-// performance add
-const addPerformance = (req, res) => {
-  try {
-    const sql = `INSERT INTO performance * VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
+// performance edit
+const editPerformance = (
+  mt20id,
+  manage_id,
+  mt10id,
+  prfnm,
+  prfpdfrom,
+  prfpdto,
+  prfruntime,
+  pcseguidance,
+  genrenm,
+  prfstate,
+  updatedate,
+  poster,
+  styurl,
+  dtguidance,
+  post,
+  prfage
+) => {
+  const sql = `UPDATE PERFORMANCE SET manage_id = ?, mt10id = ?, prfnm = ?, prfpdfrom = ?, prfpdto = ?, prfruntime = ?, pcseguidance = ?, genrenm = ?, prfstate = ?, updatedate = ?, poster = ?, styurl = ?, dtguidance = ?, post = ?, prfage = ? WHERE mt20id = ?`;
+  let params = [
+    manage_id,
+    mt10id,
+    prfnm,
+    prfpdfrom,
+    prfpdto,
+    prfruntime,
+    pcseguidance,
+    genrenm,
+    prfstate,
+    updatedate,
+    poster,
+    styurl,
+    dtguidance,
+    post,
+    prfage,
+    mt20id,
+  ];
 
-    const params = {
+  console.log(sql);
+  new Promise((resolve, reject) => {
+    dbconn.db.query(sql, params, (err, rows) => {
+      if (err) {
+        console.log(err);
+        resolve(false);
+      } else {
+        console.log(sql);
+        resolve(true);
+      }
+    });
+  });
+};
+
+// performance add
+const addPerformance = (
+  mt20id,
+  manage_id,
+  mt10id,
+  prfnm,
+  prfpdfrom,
+  prfpdto,
+  prfruntime,
+  pcseguidance,
+  genrenm,
+  prfstate,
+  updatedate,
+  poster,
+  styurl,
+  dtguidance,
+  post,
+  prfage
+) => {
+  try {
+    const sql = `INSERT INTO PERFORMANCE VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
+    let params = [
       mt20id,
       manage_id,
       mt10id,
@@ -64,13 +133,15 @@ const addPerformance = (req, res) => {
       pcseguidance,
       genrenm,
       prfstate,
-      update,
+      updatedate,
       poster,
       styurl,
-      dtguidancem,
+      dtguidance,
       post,
       prfage,
-    };
+    ];
+
+    console.log(params);
 
     return new Promise((resolve, reject) => {
       dbconn.db.query(sql, params, (err, rows) => {
@@ -89,4 +160,9 @@ const addPerformance = (req, res) => {
   }
 };
 
-module.exports = { performanceList, deletePerformance, addPerformance };
+module.exports = {
+  performanceList,
+  deletePerformance,
+  addPerformance,
+  editPerformance,
+};
