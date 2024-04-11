@@ -48,6 +48,7 @@ const loginRouter = require("./routes/member/login");
 const mainRouter = require("./routes/member/main");
 const logoutRouter = require("./routes/member/logout");
 const findIdPasswordRouter = require("./routes/member/findIdPassword");
+const macAddressRouter = require("./routes/member/macAddress");
 
 //manage 라우터 설정
 const manageLogin = require("./routes/manage/manageLogin");
@@ -74,6 +75,7 @@ app.use("/login", loginRouter);
 app.use("/main", mainRouter);
 app.use("/logout", logoutRouter);
 app.use("/findIdPassword", findIdPasswordRouter);
+app.use("/macAddress", macAddressRouter);
 
 //manage 라우터 연결
 app.use("/manage", manageLogin);
