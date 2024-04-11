@@ -86,6 +86,28 @@ const editMember = (id, pw, email, address, detailAddress) => {
   }
 };
 
+// member edit page
+const noPwEditMember = (id, email, address, detailAddress) => {
+  try {
+    const sql = `UPDATE member SET user_email = ?, address = ?, detailAddress = ? WHERE user_id = ?`;
+    let params = [email, address, detailAddress, id];
+
+    return new Promise((resolve, reject) => {
+      dbconn.db.query(sql, params, (err, rows) => {
+        if (err) {
+          console.log(err);
+          resolve(false);
+        } else {
+          resolve(true);
+        }
+      });
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Internal Server Error");
+  }
+};
+
 // member delete page
 const deleteMember = (id) => {
   try {
@@ -148,10 +170,36 @@ const getManageProfile = (id) => {
 };
 
 // manage edit page
-const editManage = (id, pw, email, phone, auth, part) => {
+const pwEditManage = (id, pw, phone, auth, part) => {
   try {
-    const sql = `UPDATE manage SET manage_password = ?, manage_phone = ?,manage_auth = ?, manage_part = ? WHERE manage_id = ?`;
-    let params = [pw, email, phone, auth, part, id];
+    const hash = bcrypt.hashSync(pw);
+    const sql = `UPDATE MANAGE SET manage_password = ?, manage_phone = ?, manage_auth= ?, manage_part = ? WHERE manage_id = ?`;
+    let params = [hash, phone, auth, part, id];
+
+    return new Promise((resolve, reject) => {
+      dbconn.db.query(sql, params, (err, rows) => {
+        if (err) {
+          console.log(err);
+          resolve(false);
+        } else {
+          resolve(true);
+        }
+      });
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Internal Server Error");
+  }
+};
+
+// manage edit page
+const editManage = (id, phone, auth, part) => {
+  try {
+    let sql = `UPDATE MANAGE SET manage_phone = ?, manage_auth= ?, manage_part = ? WHERE manage_id = ?`;
+    let params = [phone, auth, part, id];
+
+    console.log(params);
+    console.log(sql);
 
     return new Promise((resolve, reject) => {
       dbconn.db.query(sql, params, (err, rows) => {
@@ -198,9 +246,11 @@ module.exports = {
   postMemberPwCheck,
   memeberList,
   editMember,
+  noPwEditMember,
   deleteMember,
   manageList,
   getManageProfile,
+  pwEditManage,
   editManage,
   deleteManage,
 };

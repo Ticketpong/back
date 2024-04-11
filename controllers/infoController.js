@@ -47,6 +47,18 @@ const editMember = async (req, res) => {
   try {
     if (pw !== repw) {
       res.status(400).send("password is not same");
+    } else if (pw === "" && repw === "") {
+      const result = await memberService.noPwEditMember(
+        id,
+        email,
+        address,
+        detailAddress
+      );
+      if (result) {
+        res.status(200).send("member edit success");
+      } else {
+        res.status(400).send("member edit failed");
+      }
     } else {
       const result = await memberService.editMember(
         id,
@@ -55,8 +67,11 @@ const editMember = async (req, res) => {
         address,
         detailAddress
       );
-      console.log(result);
-      res.status(200).send("member main update success");
+      if (result) {
+        res.status(200).send("member pwedit success");
+      } else {
+        res.status(400).send("member pwedit failed");
+      }
     }
   } catch (error) {
     console.log(error);
@@ -104,20 +119,30 @@ const getManageProfile = async (req, res) => {
 
 // manage edit page
 const editManage = async (req, res) => {
+  let { id, pw, repw, phone, auth, part } = req.body;
   try {
-    const { pw, repw, phone, auth, part } = req.body;
     if (pw !== repw) {
       res.status(400).send("password is not same");
+    } else if (pw === "" && repw === "") {
+      const result = await manageService.editManage(id, phone, auth, part);
+      if (result) {
+        res.status(200).send("manage edit success");
+      } else {
+        res.status(400).send("manage edit failed");
+      }
     } else {
-      const result = await manageService.firstEditManage(
+      const result = await manageService.pwEditManage(
         id,
         pw,
         phone,
         auth,
         part
       );
-      console.log(result);
-      res.status(200).send("manage edit success");
+      if (result) {
+        res.status(200).send("manage pwedit success");
+      } else {
+        res.status(400).send("manage pwedit failed");
+      }
     }
   } catch (error) {
     console.log(error);
