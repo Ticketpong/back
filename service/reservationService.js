@@ -94,7 +94,7 @@ const postReservation = async (
 
 // cancelReservation
 const cancelReservation = async (imp_uid) => {
-  let sql = `DELETE FROM RESERVATION WHERE imp_uid = ?`;
+  let sql = `UPDATE RESERVATION SET success = false WHERE imp_uid = ?`;
   let params = [imp_uid];
 
   return new Promise((resolve, reject) => {

@@ -15,6 +15,6 @@ router.post("/discount", reservation.discountCard);
 router.post("/member", reservation.memberInfo);
 
 // 예약 취소
-router.delete("/cancel", reservation.cancelReservation);
+router.put("/cancel", reservation.cancelReservation);
 
 module.exports = router;
