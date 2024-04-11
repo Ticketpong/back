@@ -89,6 +89,19 @@ const getManageList = async (req, res) => {
   }
 };
 
+// manage get edit
+const getManageProfile = async (req, res) => {
+  const { id } = req.body;
+  try {
+    const member = await manageService.getManageProfile(id);
+    console.log(member);
+    res.status(200).json(member);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Internal Server Error");
+  }
+};
+
 // manage edit page
 const editManage = async (req, res) => {
   try {
@@ -133,6 +146,7 @@ module.exports = {
   editMember,
   deleteMember,
   getManageList,
+  getManageProfile,
   editManage,
   deleteManage,
 };
