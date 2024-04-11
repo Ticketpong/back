@@ -66,6 +66,9 @@ const reservation = require("./routes/reservation/reservation");
 //review 라우트 설정
 const review = require("./routes/review");
 
+// searchBar 라우트 설정
+const searchBar = require("./routes/searchBar");
+
 // 라우트 모듈 적용
 app.use("/api", apiRoutes);
 
@@ -95,6 +98,9 @@ app.use("/reservation", reservation);
 
 //review 라우터 연결
 app.use("/review", review);
+
+//searchBar 라우터 연결
+app.use("/searchBar", searchBar);
 
 //에러 핸들러
 // 404 에러 핸들러
