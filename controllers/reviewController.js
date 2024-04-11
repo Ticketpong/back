@@ -43,9 +43,9 @@ const update = async (req, res) => {
 
 // 리뷰 삭제
 const deleteReview = async (req, res) => {
-  const { imp_uid } = req.body;
+  const { pre_id } = req.body;
   try {
-    const result = await reviewService.deleteReview(imp_uid);
+    const result = await reviewService.deleteReview(pre_id);
     if (result) {
       res.status(200).send("review delete success");
     } else {

@@ -85,7 +85,32 @@ const update = async (pre_id, pretitle, precontent, prestar) => {
 };
 
 // 리뷰 삭제
-const deleteReview = async (imp_uid) => {
+const deleteReview = async (pre_id) => {
+  const sql = `SELECT imp_uid FROM REVIEW WHERE pre_id =?`;
+  const params = [pre_id];
+
+  return new Promise((resolve, reject) => {
+    dbconn.db.query(sql, params, async (err, result) => {
+      if (err) {
+        console.error("Error reading review:", err);
+        resolve(false);
+      } else {
+        const imp_uid = result[0].imp_uid;
+        console.log(imp_uid);
+
+        const deleteSuccess = await deleteReviewData(imp_uid);
+        if (deleteSuccess) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      }
+    });
+  });
+};
+
+// 리뷰 삭제
+const deleteReviewData = async (imp_uid) => {
   const sql = `DELETE FROM REVIEW WHERE imp_uid = ?`;
   const params = [imp_uid];
 
@@ -144,7 +169,10 @@ const cancelRecommand = async (pre_id) => {
 // getReviewList(최신순으로 정렬)
 const recentList = async (req, res) => {
   try {
-    const sql = `SELECT * FROM REVIEW ORDER BY predate DESC`;
+    const sql = `SELECT R.*, P.*
+    FROM REVIEW R
+    LEFT JOIN PERFORMANCE P ON P.mt20id = R.mt20id
+    ORDER BY predate DESC`;
 
     return new Promise((resolve, reject) => {
       dbconn.db.query(sql, (err, result) => {
@@ -164,7 +192,10 @@ const recentList = async (req, res) => {
 // getReviewList(별점 + 추천순으로 정렬)
 const recommandList = async (req, res) => {
   try {
-    const sql = `SELECT * FROM REVIEW ORDER BY prestar DESC, recommend DESC`;
+    const sql = `SELECT R.*, P.*
+    FROM REVIEW R
+    LEFT JOIN PERFORMANCE P ON P.mt20id = R.mt20id
+    ORDER BY prestar DESC , recommend DESC `;
 
     return new Promise((resolve, reject) => {
       dbconn.db.query(sql, (err, result) => {
@@ -184,7 +215,11 @@ const recommandList = async (req, res) => {
 // getMyReviewList (내가 쓴 리뷰만 보기, 최신순으로 정렬)
 const myReviewList = async (user_id) => {
   try {
-    const sql = `SELECT * FROM REVIEW WHERE user_id = ? ORDER BY predate DESC`;
+    const sql = `SELECT R.*, P.*
+    FROM REVIEW R
+    LEFT JOIN PERFORMANCE P ON P.mt20id = R.mt20id
+    WHERE user_id = 'member1'
+    ORDER BY predate DESC `;
     const params = [user_id];
 
     return new Promise((resolve, reject) => {
