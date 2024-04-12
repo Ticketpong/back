@@ -71,6 +71,21 @@ const recommand = async (req, res) => {
   }
 };
 
+// review 상세보기
+const reviewDetail = async (req, res) => {
+  const { pre_id } = req.body;
+  try {
+    const result = await reviewService.reviewDetail(pre_id);
+    if (result) {
+      res.status(200).json(result);
+    } else {
+      res.status(400).send("get review detail failed");
+    }
+  } catch (err) {
+    res.status(500).send("Internal Server Error");
+  }
+};
+
 // recommand 취소
 const cancelRecommand = async (req, res) => {
   const { pre_id } = req.body;
@@ -138,4 +153,5 @@ module.exports = {
   recentList,
   recommandList,
   myReviewList,
+  reviewDetail,
 };

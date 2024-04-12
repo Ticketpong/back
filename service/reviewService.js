@@ -153,6 +153,19 @@ const recommand = async (pre_id) => {
   }
 };
 
+//review 상세보기
+const reviewDetail = async (pre_id) => {
+  const sql = `SELECT * FROM REVIEW WHERE pre_id = ?`;
+  const params = [pre_id];
+
+  const success = await dbcons(sql, params);
+  if (success) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
 // 리뷰 추천 취소
 const cancelRecommand = async (pre_id) => {
   const sql = `UPDATE REVIEW SET recommend = recommend - 1 WHERE pre_id = ?`;
@@ -260,4 +273,5 @@ module.exports = {
   recentList,
   recommandList,
   myReviewList,
+  reviewDetail,
 };
