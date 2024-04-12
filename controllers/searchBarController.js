@@ -2,7 +2,7 @@ const searchBarService = require("../service/searchBarService");
 
 // 검색창
 const search = async (req, res) => {
-  const { keyword } = req.body;
+  const { keyword } = req.query;
   try {
     const result = await searchBarService.search(keyword);
     if (result) {
