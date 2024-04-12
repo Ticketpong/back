@@ -24,9 +24,9 @@ router.get("/recentList", review.recentList);
 router.get("/recommandList", review.recommandList);
 
 // 내가 쓴 리뷰만 보기 (http://localhost:8080/review/myReviewList)
-router.get("/myReviewList", review.myReviewList);
+router.post("/myReviewList", review.myReviewList);
 
 // 리뷰 상세보기 (http://localhost:8080/review/detail)
-router.get("/detail", review.reviewDetail);
+router.post("/detail", review.reviewDetail);
 
 module.exports = router;
