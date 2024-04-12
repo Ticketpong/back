@@ -6,7 +6,7 @@ const macAddress = require("../../controllers/macAddressController");
 router.post("/", macAddress.create);
 
 // macAddress 가져오기 (http://localhost:3000/macAddress/profile)
-router.get("/profile", macAddress.get);
+router.post("/profile", macAddress.get);
 
 // macAddress 수정 (http://localhost:3000/macAddress/edit)
 router.put("/edit", macAddress.update);
