@@ -1,4 +1,5 @@
 const dbconn = require("../config/mariadb");
+const crypto = require("crypto");
 
 // 리뷰 저장
 const create = async (imp_uid, pre_id, pretitle, precontent, prestar) => {
@@ -140,14 +141,86 @@ const falsePrestate = async (imp_uid) => {
   }
 };
 
+// 리뷰 추천 확인
+const checkRecommand = async (pre_id, user_id) => {
+  const sql = `SELECT * FROM RECOMMAND WHERE pre_id = ? AND user_id = ?`;
+  const params = [pre_id, user_id];
+
+  // console.log(sql, params);
+
+  return new Promise((resolve, reject) => {
+    dbconn.db.query(sql, params, async (err, result) => {
+      if (err) {
+        console.error("Error reading review:", err);
+        resolve(false);
+      } else if (result.length > 0) {
+        // 결과가 있으면 추천 취소
+        const recommandCancelSuccess = await cancelRecommand(pre_id, user_id);
+        if (recommandCancelSuccess) {
+          resolve("recommand cancel success");
+        }
+      } else {
+        // 결과가 없으면 추천
+        const recommandSuccess = await recommand(pre_id, user_id);
+        if (recommandSuccess) {
+          resolve("recommand success");
+        }
+      }
+    });
+  });
+};
+
 // 리뷰 추천
-const recommand = async (pre_id) => {
-  const sql = `UPDATE REVIEW SET recommend = recommend + 1 WHERE pre_id = ?`;
+const recommand = async (pre_id, user_id) => {
+  const sql = `SELECT * FROM REVIEW WHERE pre_id = ?`;
   const params = [pre_id];
+
+  return new Promise((resolve, reject) => {
+    dbconn.db.query(sql, params, async (err, result) => {
+      if (err) {
+        console.error("Error reading review:", err);
+        resolve(false);
+      } else {
+        const recommand = result[0];
+        const recommand_id = crypto.randomBytes(16).toString("hex");
+
+        const sql = `INSERT INTO RECOMMAND VALUES (?, ?, ?, ?)`;
+        const params = [recommand_id, pre_id, user_id, true];
+        const success = await dbcons(sql, params);
+        if (success) {
+          const sql = `UPDATE REVIEW SET recommend = recommend + 1 WHERE pre_id = ?`;
+          const params = [pre_id];
+
+          const success = await dbcons(sql, params);
+          if (success) {
+            resolve(true);
+          } else {
+            reject(false);
+          }
+        } else {
+          reject(false);
+        }
+      }
+    });
+  });
+};
+
+// 리뷰 추천 취소
+const cancelRecommand = async (pre_id, user_id) => {
+  const sql = `DELETE FROM RECOMMAND WHERE user_id = ? AND pre_id = ?`;
+  const params = [user_id, pre_id];
 
   const success = await dbcons(sql, params);
   if (success) {
-    return true;
+    const sql = `UPDATE REVIEW SET recommend = recommend - 1 WHERE pre_id = ?`;
+    const params = [pre_id];
+
+    const success = await dbcons(sql, params);
+    if (success) {
+      return true;
+    } else {
+      return false;
+    }
   } else {
     return false;
   }
@@ -171,19 +244,6 @@ const reviewDetail = async (pre_id) => {
       }
     });
   });
-};
-
-// 리뷰 추천 취소
-const cancelRecommand = async (pre_id) => {
-  const sql = `UPDATE REVIEW SET recommend = recommend - 1 WHERE pre_id = ?`;
-  const params = [pre_id];
-
-  const success = await dbcons(sql, params);
-  if (success) {
-    return true;
-  } else {
-    return false;
-  }
 };
 
 // getReviewList(최신순으로 정렬)
@@ -275,8 +335,7 @@ module.exports = {
   create,
   update,
   deleteReview,
-  recommand,
-  cancelRecommand,
+  checkRecommand,
   recentList,
   recommandList,
   myReviewList,

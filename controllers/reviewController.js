@@ -56,15 +56,15 @@ const deleteReview = async (req, res) => {
   }
 };
 
-//recommand 추가
-const recommand = async (req, res) => {
-  const { pre_id } = req.body;
+//추천 여부 확인
+const checkRecommand = async (req, res) => {
+  const { pre_id, user_id } = req.body;
   try {
-    const result = await reviewService.recommand(pre_id);
+    const result = await reviewService.checkRecommand(pre_id, user_id);
     if (result) {
-      res.status(200).send("recommand success");
+      res.status(200).send(result);
     } else {
-      res.status(400).send("recommand failed");
+      res.status(400).send("check recommand failed");
     }
   } catch (err) {
     res.status(500).send("Internal Server Error");
@@ -80,21 +80,6 @@ const reviewDetail = async (req, res) => {
       res.status(200).json(result);
     } else {
       res.status(400).send("get review detail failed");
-    }
-  } catch (err) {
-    res.status(500).send("Internal Server Error");
-  }
-};
-
-// recommand 취소
-const cancelRecommand = async (req, res) => {
-  const { pre_id } = req.body;
-  try {
-    const result = await reviewService.cancelRecommand(pre_id);
-    if (result) {
-      res.status(200).send("cancel recommand success");
-    } else {
-      res.status(400).send("cancel recommand failed");
     }
   } catch (err) {
     res.status(500).send("Internal Server Error");
@@ -148,8 +133,7 @@ module.exports = {
   create,
   update,
   deleteReview,
-  recommand,
-  cancelRecommand,
+  checkRecommand,
   recentList,
   recommandList,
   myReviewList,

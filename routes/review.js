@@ -11,11 +11,8 @@ router.put("/edit", review.update);
 // 리뷰 삭제 (http://localhost:8080/review/delete)
 router.delete("/delete", review.deleteReview);
 
-// 리뷰 추천 (http://localhost:8080/review/recommand)
-router.put("/recommand", review.recommand);
-
-// 리뷰 추천취소 (http://localhost:8080/review/recommandCancel)
-router.put("/recommandCancel", review.cancelRecommand);
+// 리뷰 확인 (http://localhost:8080/review/checkRecommand)
+router.post("/checkRecommand", review.checkRecommand);
 
 // 리뷰 최신순으로 리스트 가져오기 (http://localhost:8080/review/recentList)
 router.get("/recentList", review.recentList);
