@@ -155,7 +155,10 @@ const recommand = async (pre_id) => {
 
 //review 상세보기
 const reviewDetail = async (pre_id) => {
-  const sql = `SELECT * FROM REVIEW WHERE pre_id = ?`;
+  const sql = `SELECT R.*, P.*
+  FROM REVIEW R
+  LEFT JOIN PERFORMANCE P ON P.mt20id = R.mt20id
+  WHERE pre_id = ?`;
   const params = [pre_id];
 
   return new Promise((resolve, reject) => {
