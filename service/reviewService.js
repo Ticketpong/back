@@ -158,12 +158,16 @@ const reviewDetail = async (pre_id) => {
   const sql = `SELECT * FROM REVIEW WHERE pre_id = ?`;
   const params = [pre_id];
 
-  const success = await dbcons(sql, params);
-  if (success) {
-    return true;
-  } else {
-    return false;
-  }
+  return new Promise((resolve, reject) => {
+    dbconn.db.query(sql, params, (err, result) => {
+      if (err) {
+        console.error("Error reading review:", err);
+        resolve(false);
+      } else {
+        resolve(result);
+      }
+    });
+  });
 };
 
 // 리뷰 추천 취소
