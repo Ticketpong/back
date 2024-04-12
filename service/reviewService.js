@@ -226,6 +226,25 @@ const cancelRecommand = async (pre_id, user_id) => {
   }
 };
 
+// 추천 표시 확인
+const recommandState = async (pre_id, user_id) => {
+  const sql = `SELECT recommnad_state FROM RECOMMAND WHERE pre_id = ? AND user_id = ?`;
+  const params = [pre_id, user_id];
+
+  return new Promise((resolve, reject) => {
+    dbconn.db.query(sql, params, async (err, result) => {
+      if (err) {
+        console.error("Error reading review:", err);
+        resolve(false);
+      } else if (result.length > 0) {
+        resolve(result);
+      } else {
+        resolve(false);
+      }
+    });
+  });
+};
+
 //review 상세보기
 const reviewDetail = async (pre_id) => {
   const sql = `SELECT R.*, P.*
@@ -336,6 +355,7 @@ module.exports = {
   update,
   deleteReview,
   checkRecommand,
+  recommandState,
   recentList,
   recommandList,
   myReviewList,

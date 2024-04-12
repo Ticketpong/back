@@ -71,6 +71,21 @@ const checkRecommand = async (req, res) => {
   }
 };
 
+// 추천 표시 확인
+const recommandState = async (req, res) => {
+  const { pre_id, user_id } = req.body;
+  try {
+    const result = await reviewService.recommandState(pre_id, user_id);
+    if (result) {
+      res.status(200).json(result);
+    } else {
+      res.status(400).send("check recommand failed");
+    }
+  } catch (err) {
+    res.status(500).send("Internal Server Error");
+  }
+};
+
 // review 상세보기
 const reviewDetail = async (req, res) => {
   const { pre_id } = req.body;
@@ -134,6 +149,7 @@ module.exports = {
   update,
   deleteReview,
   checkRecommand,
+  recommandState,
   recentList,
   recommandList,
   myReviewList,
