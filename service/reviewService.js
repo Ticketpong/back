@@ -235,7 +235,7 @@ const myReviewList = async (user_id) => {
     const sql = `SELECT R.*, P.*
     FROM REVIEW R
     LEFT JOIN PERFORMANCE P ON P.mt20id = R.mt20id
-    WHERE user_id = '?'
+    WHERE user_id = ?
     ORDER BY predate DESC `;
     const params = [user_id];
 
