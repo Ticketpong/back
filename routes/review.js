@@ -9,7 +9,7 @@ router.post("/", review.create);
 router.put("/edit", review.update);
 
 // 리뷰 삭제 (http://localhost:8080/review/delete)
-router.delete("/delete", review.deleteReview);
+router.post("/delete", review.deleteReview);
 
 // 추천 확인 (http://localhost:8080/review/checkRecommand)
 router.post("/checkRecommand", review.checkRecommand);
