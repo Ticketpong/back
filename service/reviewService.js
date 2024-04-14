@@ -87,8 +87,10 @@ const update = async (pre_id, pretitle, precontent, prestar) => {
 
 // 리뷰 삭제
 const deleteReview = async (pre_id) => {
-  const sql = `SELECT imp_uid FROM REVIEW WHERE pre_id =?`;
+  const sql = `DELETE FROM RECOMMAND WHERE pre_id = ?`;
   const params = [pre_id];
+
+  console.log(sql, params);
 
   return new Promise((resolve, reject) => {
     dbconn.db.query(sql, params, async (err, result) => {
@@ -96,6 +98,31 @@ const deleteReview = async (pre_id) => {
         console.error("Error reading review:", err);
         resolve(false);
       } else {
+        console.log("delete recommand success");
+        const sql = `SELECT imp_uid FROM REVIEW WHERE pre_id =?`;
+        const params = [pre_id];
+        console.log(sql, params);
+
+        const findSuccess = await findImp_uid(sql, params);
+        if (findSuccess) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      }
+    });
+  });
+};
+
+// imp_uid 찾기
+const findImp_uid = async (sql, params) => {
+  return new Promise((resolve, reject) => {
+    dbconn.db.query(sql, params, async (err, result) => {
+      if (err) {
+        console.error("Error reading review:", err);
+        resolve(false);
+      } else {
+        console.log(result);
         const imp_uid = result[0].imp_uid;
         console.log(imp_uid);
 
