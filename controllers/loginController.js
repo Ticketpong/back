@@ -18,6 +18,8 @@ const memberLogin = async (req, res, next) => {
       const isLogined = true;
       const token = jwt.sign({ id, isLogined }, secretKey, options);
       res.status(200).json({ token, isLogined, message: "login success" });
+    } else if (result === false) {
+      res.status(200).json("login failed");
     } else {
       res
         .status(400)
@@ -58,10 +60,12 @@ const postManageLogin = async (req, res, next) => {
   let { id, pw } = req.body;
   try {
     let result = await loginService.manageLogin(id, pw);
-    if (result) {
+    if (result === true) {
       const isLogined = true;
       const token = jwt.sign({ id, isLogined }, secretKey, options);
       res.status(200).json({ token, isLogined, message: "login success" });
+    } else if (result === false) {
+      res.status(200).json("login failed");
     } else {
       res
         .status(400)
