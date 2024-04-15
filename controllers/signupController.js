@@ -80,8 +80,10 @@ const idCheck = async (req, res, next) => {
     let result = await signupService.idCheck(id);
     if (result) {
       res.status(200).send("사용 가능한 아이디입니다.");
+    } else if (result === false) {
+      res.status(200).send("이미 사용중인 아이디입니다.");
     } else {
-      res.status(400).send("이미 사용중인 아이디입니다.");
+      res.status(400).send("아이디를 입력해주세요.");
     }
   } catch (error) {
     console.log(error);
@@ -96,8 +98,10 @@ const emailCheck = async (req, res, next) => {
     let result = await signupService.emailCheck(email);
     if (result) {
       res.status(200).send("사용 가능한 이메일입니다.");
+    } else if (result === false) {
+      res.status(200).send("이미 사용중인 이메일입니다.");
     } else {
-      res.status(400).send("이미 사용중인 이메일입니다.");
+      res.status(400).send("이메일을 입력해주세요.");
     }
   } catch (error) {
     console.log(error);
