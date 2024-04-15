@@ -8,8 +8,8 @@ router.get("/signup", signup.getSignup);
 
 router.post("/", signup.memberSignup);
 
-router.get("/idcheck", signup.idCheck);
+router.post("/idcheck", signup.idCheck);
 
-router.get("/emailcheck", signup.emailCheck);
+router.post("/emailcheck", signup.emailCheck);
 
 module.exports = router;
