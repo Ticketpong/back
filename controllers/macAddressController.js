@@ -49,8 +49,26 @@ const update = async (req, res) => {
   }
 };
 
+// 현재 사용자의 macAddress 가져오기
+const getCurrent = async (req, res) => {
+  let { user_id } = req.body;
+  try {
+    const result = await macAddressService.getCurrent(user_id);
+    if (result === true) {
+      res.status(200).send(result);
+    } else if (result === false) {
+      res.status(200).send("macAddress is not match");
+    } else {
+      res.status(400).send("user_id is not exist");
+    }
+  } catch (err) {
+    res.status(500).send("Internal Server Error");
+  }
+};
+
 module.exports = {
   create,
   get,
   update,
+  getCurrent,
 };

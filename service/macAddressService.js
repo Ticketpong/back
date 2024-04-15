@@ -99,8 +99,51 @@ const update = async (device_id, device_name) => {
   }
 };
 
+// 현재 사용자의 macAddress 가져오기
+const getCurrent = async (user_id) => {
+  try {
+    // macAddress 가져오기
+    const getMac = () => {
+      return new Promise((resolve, reject) => {
+        macaddress.one((err, mac) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(mac);
+          }
+        });
+      });
+    };
+
+    const mac = await getMac();
+
+    // user_id의 저장된 mac address 가져오기
+    const sql = `SELECT macaddress FROM DEVICES WHERE user_id = ?`;
+    const params = [user_id];
+
+    return new Promise((resolve, reject) => {
+      dbconn.db.query(sql, params, (err, result) => {
+        if (err) {
+          console.error("Error getting mac address:", err);
+          resolve(false);
+        } else {
+          if (result.length > 0 && result[0].macaddress === mac) {
+            resolve(true);
+          } else {
+            resolve(false);
+          }
+        }
+      });
+    });
+  } catch (error) {
+    console.error("Error getting mac address:", error);
+    return false;
+  }
+};
+
 module.exports = {
   create,
   get,
   update,
+  getCurrent,
 };
