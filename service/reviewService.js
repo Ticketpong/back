@@ -1,3 +1,4 @@
+const f = require("session-file-store");
 const dbconn = require("../config/mariadb");
 const crypto = require("crypto");
 
@@ -174,32 +175,38 @@ const checkRecommand = async (pre_id, user_id) => {
     if (!user_id) {
       return "login required";
     } else {
-      // 사용자가 존재하는지 확인
-      const userCheck = `SELECT * FROM MEMBER WHERE user_id = ?`;
-      const userParams = [user_id];
-      const userCheckSuccess = await dbcons(userCheck, userParams);
-      if (!userCheckSuccess) {
-        console.log("user not exist");
-        return false;
-      } else {
-        // 리뷰가 존재하는지 확인
-        const sql = `SELECT * FROM RECOMMAND WHERE pre_id = ? AND user_id = ?`;
-        const params = [pre_id, user_id];
+      const sql = `SELECT * FROM RECOMMAND WHERE pre_id = ? AND user_id = ?`;
+      const params = [pre_id, user_id];
 
-        const result = await dbcons(sql, params);
-
-        if (result) {
-          const recommandCancelSuccess = await cancelRecommand(pre_id, user_id);
-          if (recommandCancelSuccess) {
-            return "recommand cancel success";
+      return new Promise((resolve, reject) => {
+        dbconn.db.query(sql, params, async (err, result) => {
+          if (err) {
+            console.error("Error reading review:", err);
+            resolve(false);
+          } else if (result.length > 0) {
+            // 추천한 상태
+            const recommandCancelSuccess = await cancelRecommand(
+              pre_id,
+              user_id
+            ); // 추천 취소
+            if (recommandCancelSuccess) {
+              resolve("cancel recommand success");
+            } else {
+              resolve(false);
+            }
+          } else if (result.length === 0) {
+            // 추천하지 않은 상태
+            const recommandSuccess = await recommand(pre_id, user_id); // 추천
+            if (recommandSuccess) {
+              resolve("recommand success");
+            } else {
+              resolve(false);
+            }
+          } else {
+            resolve(false);
           }
-        } else {
-          const recommandSuccess = await recommand(pre_id, user_id);
-          if (recommandSuccess) {
-            return "recommand success";
-          }
-        }
-      }
+        });
+      });
     }
   } catch (error) {
     console.error("Error recommand:", error);

@@ -67,8 +67,6 @@ const checkRecommand = async (req, res) => {
     const result = await reviewService.checkRecommand(pre_id, user_id);
     if (result) {
       res.status(200).send(result);
-    } else if (result === false) {
-      res.status(200).send("check recommand failed");
     } else {
       res.status(400).send("check recommand failed");
     }
