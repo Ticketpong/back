@@ -170,31 +170,41 @@ const falsePrestate = async (imp_uid) => {
 
 // 리뷰 추천 확인
 const checkRecommand = async (pre_id, user_id) => {
-  const sql = `SELECT * FROM RECOMMAND WHERE pre_id = ? AND user_id = ?`;
-  const params = [pre_id, user_id];
-
-  // console.log(sql, params);
-
-  return new Promise((resolve, reject) => {
-    dbconn.db.query(sql, params, async (err, result) => {
-      if (err) {
-        console.error("Error reading review:", err);
-        resolve(false);
-      } else if (result.length > 0) {
-        // 결과가 있으면 추천 취소
-        const recommandCancelSuccess = await cancelRecommand(pre_id, user_id);
-        if (recommandCancelSuccess) {
-          resolve("recommand cancel success");
-        }
+  try {
+    if (!user_id) {
+      return "login required";
+    } else {
+      // 사용자가 존재하는지 확인
+      const userCheck = `SELECT * FROM MEMBER WHERE user_id = ?`;
+      const userParams = [user_id];
+      const userCheckSuccess = await dbcons(userCheck, userParams);
+      if (!userCheckSuccess) {
+        console.log("user not exist");
+        return false;
       } else {
-        // 결과가 없으면 추천
-        const recommandSuccess = await recommand(pre_id, user_id);
-        if (recommandSuccess) {
-          resolve("recommand success");
+        // 리뷰가 존재하는지 확인
+        const sql = `SELECT * FROM RECOMMAND WHERE pre_id = ? AND user_id = ?`;
+        const params = [pre_id, user_id];
+
+        const result = await dbcons(sql, params);
+
+        if (result) {
+          const recommandCancelSuccess = await cancelRecommand(pre_id, user_id);
+          if (recommandCancelSuccess) {
+            return "recommand cancel success";
+          }
+        } else {
+          const recommandSuccess = await recommand(pre_id, user_id);
+          if (recommandSuccess) {
+            return "recommand success";
+          }
         }
       }
-    });
-  });
+    }
+  } catch (error) {
+    console.error("Error recommand:", error);
+    return false;
+  }
 };
 
 // 리뷰 추천
